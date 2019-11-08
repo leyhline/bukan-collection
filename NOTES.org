@@ -2,9 +2,30 @@
 This is kind of backwards...
 
 * Work Log
-** KW45/2019 [0/2]
-*** TODO Manually going through Bukan Collection
-*** TODO Skim "Digital Image Processing" book
+** TODO CW45/2019 [2/3]
+   SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
+*** DONE Manually going through Bukan Collection
+    CLOSED: [2019-11-08 Fr 14:51]
+*** DONE Skim "Digital Image Processing" book
+    CLOSED: [2019-11-08 Fr 20:16]
+    - Continuous Image Characterization
+      1) Continuous Image Mathematical Characterization
+      2) Psychophysical Vision Properties
+      3) Photometry and Colorimetry
+
+*** TODO Prepare short presentation about topic
+
+** TODO CW46/2019 [0/2]
+   SCHEDULED: <2019-11-11 Mo> DEADLINE: <2019-11-16 Sa>
+*** TODO Continue with "Digital Image Processing
+    - Digital Image Characterization
+    - Discrete Two-Dimensional Processing
+*** TODO Some quantitative Image Analysis
+    I want to get some categories for the image processing pipeline.
+
+** TODO CW47/2019 [0/0]
+   SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
+
 
 * Overview
 We have 366 scanned books with around 90,000 pages. Now we want to find some links for better understanding the data.
