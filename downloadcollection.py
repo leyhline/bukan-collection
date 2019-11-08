@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """
+downloadcollection.py
+~~~~~~~~~~~~~~~~~~~~~
+
 A really simple downloader for the full Bukan Collection from the
 Center of Open Data in the Humanities (CODH) <http://codh.rois.ac.jp/>.
 
@@ -8,11 +11,10 @@ of verification. The folder structure is:
 
 data/{book_id}/data.zip       (for the image archives)
 data/{book_id}/manifest.json  (for metadata by IIIF protocol)
-"""
 
-__author__ = "Thomas Leyh"
-__author_email__ = "thomas.leyh@mailbox.org"
-__copyright__ = "(c) 2019 Thomas Leyh"
+:author: Thomas Leyh <thomas.leyh@mailbox.org>
+:copyright: (c) 2019 Thomas Leyh
+"""
 
 import csv
 import os
