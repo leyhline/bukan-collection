@@ -1,0 +1,56 @@
+#+TITLE: Identifying Woodblocks from printed Bukan Books
+This is kind of backwards...
+
+* Work Log
+** KW45/2019 [0/2]
+*** TODO Manually going through Bukan Collection
+*** TODO Skim "Digital Image Processing" book
+
+* Overview
+We have 366 scanned books with around 90,000 pages. Now we want to find some links for better understanding the data.
+
+*We have no ground truth!*
+
+So first, let's apply some techniques from classical image processing.
+
+
+* Various Open Questions
+  - Is there a difference between simple 武鑑 and 武鑑大全?
+
+    
+* Historical and Cultural Background
+** TODO Visit woodblock printing museums [0/3]
+*** TODO [[http://www.ukiyoe-ota-muse.jp/][Ota Memorial Museum of Art]]
+*** TODO [[https://www.printing-museum.org/][Printing Museum]]
+*** TODO [[https://hokusai-museum.jp/][Sumida Hokusai Museum]]
+** Reading some Books
+   - [x] The Elements of Japanese Design
+
+    
+* Working with the Data itself
+** TODO Manually examine the collection [33%]
+*** DONE Usable in general? [352/366]
+    CLOSED: [2019-11-08 Fr 08:10]
+*** TODO Measurements of the books [0/366]
+    Width, height and position and maybe center line
+*** TODO Automatic filtering the books by quantitative measures 
+    - Do we have enough books from the same location?
+    - Do the number of pages match?
+
+    
+* Technical Stuff
+** Preprocessing
+*** TODO Convert to Greyscale
+*** TODO Convert to binary (Black/White)
+    You might want to use Histograms for finding good thresholds
+** Finding Major Differences
+   With perceptual hashes using [[https://phash.org/][pHash]]
+** Finding Minor Differences
+   Aligning/Registering the images and doing pixelwise comparison
+** Various Notes
+   - Maybe take a look at [[https://halide-lang.org/][Halide]]
+   
+
+* Bibliography
+  First, find some papers/journals to read.
+** TODO Prepare BibTeX environment
