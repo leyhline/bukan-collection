@@ -1,7 +1,8 @@
 #+TITLE: Identifying Woodblocks from printed Bukan Books
+#+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log
+* Work Log [1/20]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
 *** DONE Manually going through Bukan Collection
@@ -16,16 +17,48 @@ This is kind of backwards...
 *** DONE Prepare short presentation about topic
     CLOSED: [2019-11-11 Mo 12:34]
 
-** TODO CW46/2019 [0/2]
+** TODO CW46/2019 [2/3]
    SCHEDULED: <2019-11-11 Mo> DEADLINE: <2019-11-16 Sa>
 *** TODO Continue with "Digital Image Processing
     - Digital Image Characterization
     - Discrete Two-Dimensional Processing
-*** TODO Some quantitative Image Analysis
+*** DONE Some quantitative Image Analysis
+    CLOSED: [2019-11-13 Mi 08:52]
     I want to get some categories for the image processing pipeline.
 
-** TODO CW47/2019 [0/0]
+*** DONE Look for related papers
+    CLOSED: [2019-11-13 Mi 12:36]
+    - ICDAR (International Conference on Document Analysis and Recognition)
+    - CBDAR (International Workshop on Camera-Based Document Analysis)
+    - Both seem to be useless at the moment
+** TODO CW47/2019 [0/4]
    SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
+*** TODO Set up work PC
+*** TODO Convert to grayscale
+*** TODO First experiments with page detection
+    First create a small subset for testing.
+    Next run a few OpenCV scripts.
+*** TODO Evaluation of pHashes
+    I thing I need a low-level approach here since my computer is so slow.
+    So: C++/C/Rust (don't know how its FFI works here)
+
+** TODO CW48/2019 [0/0]
+** TODO CW49/2019 [0/0]
+** TODO CW50/2019 [0/0]
+** TODO CW51/2019 [0/0]
+** TODO CW52/2019 [0/0]
+** TODO CW01/2020 [0/0]
+** TODO CW02/2020 [0/0]
+** TODO CW03/2020 [0/0]
+** TODO CW04/2020 [0/0]
+** TODO CW05/2020 [0/0]
+** TODO CW06/2020 [0/0]
+** TODO CW07/2020 [0/0]
+** TODO CW08/2020 [0/0]
+** TODO CW09/2020 [0/0]
+** TODO CW10/2020 [0/0]
+** TODO CW11/2020 [0/0]
+** TODO CW12/2020 [0/0]
 
 
 * Overview
@@ -36,8 +69,21 @@ We have 366 scanned books with around 90,000 pages. Now we want to find some lin
 So first, let's apply some techniques from classical image processing.
 
 
+* Problems
+** Easy?
+   Seem to be solved with standard tools; just need to find the right parameters.
+   - Page detection
+** Medium?
+   There are some current papers on this; harder than it seems but there are some working approaches.
+   - Page binarization
+** Hard?
+   There are no (useful) existing approaches and therefore no existing tools.
+   But it seems this isn't the problem here. The task is /too easy/. ;)
+
+
 * Various Open Questions
-  - Is there a difference between simple 武鑑 and 武鑑大全?
+  - [x] Is there a difference between simple 武鑑 and 武鑑大全?
+    Not sure, maybe just a different edition.
 
     
 * Historical and Cultural Background
@@ -47,6 +93,7 @@ So first, let's apply some techniques from classical image processing.
 *** TODO [[https://hokusai-museum.jp/][Sumida Hokusai Museum]]
 ** Reading some Books
    - [x] The Elements of Japanese Design
+   - [ ] Digital Image Processing
 
     
 * Working with the Data itself
@@ -55,24 +102,20 @@ So first, let's apply some techniques from classical image processing.
     CLOSED: [2019-11-08 Fr 08:10]
 *** TODO Measurements of the books [0/366]
     Width, height and position and maybe center line
+    But it should be possible to just automate this
 *** TODO Automatic filtering the books by quantitative measures 
     - Do we have enough books from the same location?
     - Do the number of pages match?
 
-    
+      
 * Technical Stuff
 ** Preprocessing
 *** TODO Convert to Greyscale
 *** TODO Convert to binary (Black/White)
     You might want to use Histograms for finding good thresholds
+    "Document Image Binarization"
 ** Finding Major Differences
    With perceptual hashes using [[https://phash.org/][pHash]]
 ** Finding Minor Differences
    Aligning/Registering the images and doing pixelwise comparison
-** Various Notes
-   - Maybe take a look at [[https://halide-lang.org/][Halide]]
    
-
-* Bibliography
-  First, find some papers/journals to read.
-** TODO Prepare BibTeX environment
