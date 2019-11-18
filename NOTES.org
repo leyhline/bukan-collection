@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [1/20]
+* Work Log [2/20]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
 *** DONE Manually going through Bukan Collection
@@ -17,9 +17,10 @@ This is kind of backwards...
 *** DONE Prepare short presentation about topic
     CLOSED: [2019-11-11 Mo 12:34]
 
-** TODO CW46/2019 [2/3]
-   SCHEDULED: <2019-11-11 Mo> DEADLINE: <2019-11-16 Sa>
-*** TODO Continue with "Digital Image Processing
+** DONE CW46/2019 [3/3]
+   CLOSED: [2019-11-15 Fr 16:50] SCHEDULED: <2019-11-11 Mo> DEADLINE: <2019-11-16 Sa>
+*** DONE Continue with "Digital Image Processing
+    CLOSED: [2019-11-15 Fr 16:50]
     - Digital Image Characterization
     - Discrete Two-Dimensional Processing
 *** DONE Some quantitative Image Analysis
@@ -31,16 +32,19 @@ This is kind of backwards...
     - ICDAR (International Conference on Document Analysis and Recognition)
     - CBDAR (International Workshop on Camera-Based Document Analysis)
     - Both seem to be useless at the moment
-** TODO CW47/2019 [0/4]
+** TODO CW47/2019 [1/5]
    SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
-*** TODO Set up work PC
-*** TODO Convert to grayscale
+*** DONE Set up work PC
+    CLOSED: [2019-11-18 Mo 11:11]
+*** TODO Create small subset for testing
 *** TODO First experiments with page detection
-    First create a small subset for testing.
-    Next run a few OpenCV scripts.
+    Run a few OpenCV scripts.
 *** TODO Evaluation of pHashes
     I thing I need a low-level approach here since my computer is so slow.
     So: C++/C/Rust (don't know how its FFI works here)
+*** TODO Continue with "Digital Image Processing"
+    - Image Improvement
+    
 
 ** TODO CW48/2019 [0/0]
 ** TODO CW49/2019 [0/0]
