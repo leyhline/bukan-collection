@@ -32,7 +32,7 @@ This is kind of backwards...
     - ICDAR (International Conference on Document Analysis and Recognition)
     - CBDAR (International Workshop on Camera-Based Document Analysis)
     - Both seem to be useless at the moment
-** TODO CW47/2019 [1/5]
+** TODO CW47/2019 [2/5]
    SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
 *** DONE Set up work PC
     CLOSED: [2019-11-18 Mo 11:11]
@@ -42,12 +42,16 @@ This is kind of backwards...
 *** TODO Evaluation of pHashes
     I thing I need a low-level approach here since my computer is so slow.
     So: C++/C/Rust (don't know how its FFI works here)
-*** TODO Continue with "Digital Image Processing"
+*** DONE Continue with "Digital Image Processing"
+    CLOSED: [2019-11-21 木 18:46]
     - Image Improvement
-    
 
 ** TODO CW48/2019 [0/0]
+   SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
 ** TODO CW49/2019 [0/0]
+   SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
+*** Prepare for meeting with Prof Kitamoto
+
 ** TODO CW50/2019 [0/0]
 ** TODO CW51/2019 [0/0]
 ** TODO CW52/2019 [0/0]
@@ -86,7 +90,7 @@ So first, let's apply some techniques from classical image processing.
 
 
 * Various Open Questions
-  - [x] Is there a difference between simple 武鑑 and 武鑑大全?
+  - [X] Is there a difference between simple 武鑑 and 武鑑大全?
     Not sure, maybe just a different edition.
 
     
@@ -96,20 +100,21 @@ So first, let's apply some techniques from classical image processing.
 *** TODO [[https://www.printing-museum.org/][Printing Museum]]
 *** TODO [[https://hokusai-museum.jp/][Sumida Hokusai Museum]]
 ** Reading some Books
-   - [x] The Elements of Japanese Design
+   - [X] The Elements of Japanese Design
    - [ ] Digital Image Processing
 
     
 * Working with the Data itself
-** TODO Manually examine the collection [33%]
+** TODO Manually examine the collection [66%]
 *** DONE Usable in general? [352/366]
     CLOSED: [2019-11-08 Fr 08:10]
 *** TODO Measurements of the books [0/366]
     Width, height and position and maybe center line
     But it should be possible to just automate this
-*** TODO Automatic filtering the books by quantitative measures 
+*** DONE Automatic filtering the books by quantitative measures 
+    CLOSED: [2019-11-21 木 18:50]
     - Do we have enough books from the same location?
-    - Do the number of pages match?
+    - Does the number of pages match?
 
       
 * Technical Stuff
