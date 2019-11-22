@@ -32,16 +32,20 @@ This is kind of backwards...
     - ICDAR (International Conference on Document Analysis and Recognition)
     - CBDAR (International Workshop on Camera-Based Document Analysis)
     - Both seem to be useless at the moment
-** TODO CW47/2019 [2/5]
+** TODO CW47/2019 [4/5]
    SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
 *** DONE Set up work PC
     CLOSED: [2019-11-18 Mo 11:11]
-*** TODO Create small subset for testing
+*** DONE Create small subset for testing
+    CLOSED: [2019-11-22 金 10:02]
+    Use the 袖珍武鑑 (shuuchinbukan.csv) books. These are 56 editions over 89 years.
 *** TODO First experiments with page detection
     Run a few OpenCV scripts.
-*** TODO Evaluation of pHashes
+*** DONE Evaluation of pHashes
+    CLOSED: [2019-11-22 金 09:41]
     I thing I need a low-level approach here since my computer is so slow.
     So: C++/C/Rust (don't know how its FFI works here)
+    *Result: Did not work*
 *** DONE Continue with "Digital Image Processing"
     CLOSED: [2019-11-21 木 18:46]
     - Image Improvement
@@ -101,7 +105,6 @@ So first, let's apply some techniques from classical image processing.
 *** TODO [[https://hokusai-museum.jp/][Sumida Hokusai Museum]]
 ** Reading some Books
    - [X] The Elements of Japanese Design
-   - [ ] Digital Image Processing
 
     
 * Working with the Data itself
@@ -123,8 +126,10 @@ So first, let's apply some techniques from classical image processing.
 *** TODO Convert to binary (Black/White)
     You might want to use Histograms for finding good thresholds
     "Document Image Binarization"
-** Finding Major Differences
+** DONE Finding Major Differences
+   CLOSED: [2019-11-22 金 09:40]
    With perceptual hashes using [[https://phash.org/][pHash]]
+   *Result: Did not work!*
 ** Finding Minor Differences
    Aligning/Registering the images and doing pixelwise comparison
    
