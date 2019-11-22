@@ -39,8 +39,6 @@ This is kind of backwards...
 *** DONE Create small subset for testing
     CLOSED: [2019-11-22 金 10:02]
     Use the 袖珍武鑑 (shuuchinbukan.csv) books. These are 56 editions over 89 years.
-*** TODO First experiments with page detection
-    Run a few OpenCV scripts.
 *** DONE Evaluation of pHashes
     CLOSED: [2019-11-22 金 09:41]
     I thing I need a low-level approach here since my computer is so slow.
@@ -50,8 +48,14 @@ This is kind of backwards...
     CLOSED: [2019-11-21 木 18:46]
     - Image Improvement
 
-** TODO CW48/2019 [0/0]
+*** TODO Manually prepare annotations for 袖珍武鑑 test set
+
+** TODO CW48/2019 [0/2]
    SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
+*** TODO First experiments with page detection
+    Run a few OpenCV scripts.
+*** TODO Finish "Digital Image Processing"
+
 ** TODO CW49/2019 [0/0]
    SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
 *** Prepare for meeting with Prof Kitamoto
