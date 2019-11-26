@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [2/20]
+* Work Log [3/20]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
 *** DONE Manually going through Bukan Collection
@@ -32,8 +32,8 @@ This is kind of backwards...
     - ICDAR (International Conference on Document Analysis and Recognition)
     - CBDAR (International Workshop on Camera-Based Document Analysis)
     - Both seem to be useless at the moment
-** TODO CW47/2019 [4/5]
-   SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
+** DONE CW47/2019 [4/4]
+   CLOSED: [2019-11-25 Mo 22:05] SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
 *** DONE Set up work PC
     CLOSED: [2019-11-18 Mo 11:11]
 *** DONE Create small subset for testing
@@ -48,14 +48,12 @@ This is kind of backwards...
     CLOSED: [2019-11-21 木 18:46]
     - Image Improvement
 
-*** TODO Manually prepare annotations for 袖珍武鑑 test set
-
-** TODO CW48/2019 [0/2]
+** TODO CW48/2019 [0/3]
    SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
+*** TODO Manually prepare annotations for 袖珍武鑑 test set
 *** TODO First experiments with page detection
     Run a few OpenCV scripts.
 *** TODO Finish "Digital Image Processing"
-
 ** TODO CW49/2019 [0/0]
    SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
 *** Prepare for meeting with Prof Kitamoto
