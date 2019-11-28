@@ -55,10 +55,11 @@ This is kind of backwards...
 *** TODO First experiments with page detection
     Run a few OpenCV scripts.
 *** TODO Finish "Digital Image Processing"
-** TODO CW49/2019 [0/0]
+** TODO CW49/2019 [0/1]
    SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
-*** Prepare for meeting with Prof Kitamoto
-
+*** TODO Prepare for meeting with Prof Kitamoto
+      SCHEDULED: <2019-12-02 月>
+    
 ** TODO CW50/2019 [0/0]
 ** TODO CW51/2019 [0/0]
 ** TODO CW52/2019 [0/0]
