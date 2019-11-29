@@ -48,13 +48,15 @@ This is kind of backwards...
     CLOSED: [2019-11-21 木 18:46]
     - Image Improvement
 
-** TODO CW48/2019 [1/3]
+** TODO CW48/2019 [2/3]
    SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
 *** DONE Manually prepare annotations for 袖珍武鑑 test set
     CLOSED: [2019-11-27 Mi 18:00]
 *** TODO First experiments with page detection
     Run a few OpenCV scripts.
-*** TODO Finish "Digital Image Processing"
+    Or even better: First read the documentation and run some examples.
+*** DONE Finish "Digital Image Processing"
+    CLOSED: [2019-11-29 Fr 08:59]
 ** TODO CW49/2019 [0/1]
    SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
 *** TODO Prepare for meeting with Prof Kitamoto
