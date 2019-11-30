@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [3/20]
+* Work Log [4/20]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
 *** DONE Manually going through Bukan Collection
@@ -48,20 +48,20 @@ This is kind of backwards...
     CLOSED: [2019-11-21 木 18:46]
     - Image Improvement
 
-** TODO CW48/2019 [2/3]
-   SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
+** DONE CW48/2019 [2/2]
+   CLOSED: [2019-11-30 Sa 12:13] SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
 *** DONE Manually prepare annotations for 袖珍武鑑 test set
     CLOSED: [2019-11-27 Mi 18:00]
-*** TODO First experiments with page detection
-    Run a few OpenCV scripts.
-    Or even better: First read the documentation and run some examples.
 *** DONE Finish "Digital Image Processing"
     CLOSED: [2019-11-29 Fr 08:59]
-** TODO CW49/2019 [0/1]
+** TODO CW49/2019 [0/4]
    SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
 *** TODO Prepare for meeting with Prof Kitamoto
       SCHEDULED: <2019-12-02 月>
-    
+*** TODO Start with "Computer Vision" book
+*** TODO Skim OpenCV Documentation and make notes
+    At least a few bullet points for each chapter of the official docs
+*** TODO Implement a first feature matching algorithm
 ** TODO CW50/2019 [0/0]
 ** TODO CW51/2019 [0/0]
 ** TODO CW52/2019 [0/0]
@@ -128,7 +128,9 @@ So first, let's apply some techniques from classical image processing.
       
 * Technical Stuff
 ** Preprocessing
-*** TODO Convert to Greyscale
+*** DONE Convert to Greyscale
+    CLOSED: [2019-11-30 Sa 12:17]
+    Do this in memory
 *** TODO Convert to binary (Black/White)
     You might want to use Histograms for finding good thresholds
     "Document Image Binarization"
