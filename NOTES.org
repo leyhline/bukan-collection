@@ -54,15 +54,18 @@ This is kind of backwards...
     CLOSED: [2019-11-27 Mi 18:00]
 *** DONE Finish "Digital Image Processing"
     CLOSED: [2019-11-29 Fr 08:59]
-** TODO CW49/2019 [0/4]
+** TODO CW49/2019 [2/4]
    SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
-*** TODO Prepare for meeting with Prof Kitamoto
-      SCHEDULED: <2019-12-02 月>
+*** DONE Prepare for meeting with Prof Kitamoto
+      CLOSED: [2019-12-02 Mo 20:38] SCHEDULED: <2019-12-02 月>
 *** TODO Start with "Computer Vision" book
-*** TODO Skim OpenCV Documentation and make notes
+*** DONE Skim OpenCV Documentation and make notes
+    CLOSED: [2019-12-02 Mo 20:38]
     At least a few bullet points for each chapter of the official docs
 *** TODO Implement a first feature matching algorithm
 ** TODO CW50/2019 [0/0]
+*** TODO Meeting with Prof Kitamoto
+    SCHEDULED: <2019-12-09 Mo>
 ** TODO CW51/2019 [0/0]
 ** TODO CW52/2019 [0/0]
 ** TODO CW01/2020 [0/0]
