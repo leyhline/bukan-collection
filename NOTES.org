@@ -63,6 +63,7 @@ This is kind of backwards...
     CLOSED: [2019-12-02 Mo 20:38]
     At least a few bullet points for each chapter of the official docs
 *** TODO Implement a first feature matching algorithm
+    Starting out with the OpenCV tutorials
 ** TODO CW50/2019 [0/0]
 *** TODO Meeting with Prof Kitamoto
     SCHEDULED: <2019-12-09 Mo>
