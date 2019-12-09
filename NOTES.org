@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [4/20]
+* Work Log [5/20]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
 *** DONE Manually going through Bukan Collection
@@ -54,20 +54,41 @@ This is kind of backwards...
     CLOSED: [2019-11-27 Mi 18:00]
 *** DONE Finish "Digital Image Processing"
     CLOSED: [2019-11-29 Fr 08:59]
-** TODO CW49/2019 [2/4]
-   SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
+** DONE CW49/2019 [4/4]
+   CLOSED: [2019-12-09 月 10:54] SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
 *** DONE Prepare for meeting with Prof Kitamoto
       CLOSED: [2019-12-02 Mo 20:38] SCHEDULED: <2019-12-02 月>
-*** TODO Start with "Computer Vision" book
+*** DONE Start with "Computer Vision" book
+    CLOSED: [2019-12-09 月 10:54]
+    - [X] Introduction
+    - [X] Image formation
+    - [X] Image processing
 *** DONE Skim OpenCV Documentation and make notes
     CLOSED: [2019-12-02 Mo 20:38]
     At least a few bullet points for each chapter of the official docs
-*** TODO Implement a first feature matching algorithm
+*** DONE Implement a first feature matching algorithm
+    CLOSED: [2019-12-09 月 10:54]
     Starting out with the OpenCV tutorials
-** TODO CW50/2019 [0/0]
+    - [X] I used ORB because not patented and from OpenCV itself. Matching looks good.
+    - [ ] I now like to have some metrics for comparing matching algorithms.
+    - [ ] Furthermore, I like to proceed with feature based alignment. Maybe building a first prototype.
+
+** TODO CW50/2019 [0/4]
 *** TODO Meeting with Prof Kitamoto
     SCHEDULED: <2019-12-09 Mo>
-** TODO CW51/2019 [0/0]
+*** TODO Continue with "Computer Vision" book
+    - [ ] Feature Detection and Matching
+    - [ ] Segmentation
+    - [ ] Feature-based alignment
+*** TODO Implement and describe a simple baseline
+    - I this I'll best use ORB at first
+*** TODO Experiment with different Feature Detectors
+    - [[https://docs.opencv.org/4.1.1/d5/d51/group__features2d__main.html][OpenCV Feature Descriptors]]
+    - I think I don't need scale invariance; but I'll test this!
+** TODO CW51/2019 [0/1]
+*** TODO Finish "Computer Vision" book
+    - [ ] Skim rest of the book,
+    - [ ] Especially Image-based rendering (what is this?)
 ** TODO CW52/2019 [0/0]
 ** TODO CW01/2020 [0/0]
 ** TODO CW02/2020 [0/0]

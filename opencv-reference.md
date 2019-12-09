@@ -17,5 +17,7 @@ Especially for the Python bindings.
 
 * `cv.cornerHarris(image, 2, 3, 0.04)`
   <https://docs.opencv.org/4.1.1/dd/d1a/group__imgproc__feature.html#gac1fc3598018010880e370e2f709b4345>
-* `cv.goodFeaturesToTrack(gray,25,0.01,10)`
+* `cv.goodFeaturesToTrack(image, 25, 0.01, 10)`
   <https://docs.opencv.org/4.1.1/dd/d1a/group__imgproc__feature.html#gaaf8a051fb13cab1eba5e2149f75e902f>
+* `cv.ORB_create()`
+  <https://docs.opencv.org/4.1.1/db/d95/classcv_1_1ORB.html#aeff0cbe668659b7ca14bb85ff1c4073b>
