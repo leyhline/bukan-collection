@@ -73,11 +73,12 @@ This is kind of backwards...
     - [ ] I now like to have some metrics for comparing matching algorithms.
     - [ ] Furthermore, I like to proceed with feature based alignment. Maybe building a first prototype.
 
-** TODO CW50/2019 [0/4]
-*** TODO Meeting with Prof Kitamoto
-    SCHEDULED: <2019-12-09 Mo>
+** TODO CW50/2019 [1/4]
+   SCHEDULED: <2019-12-09 月> DEADLINE: <2019-12-14 土>
+*** DONE Meeting with Prof Kitamoto
+    CLOSED: [2019-12-10 火 14:09] SCHEDULED: <2019-12-09 Mo>
 *** TODO Continue with "Computer Vision" book
-    - [ ] Feature Detection and Matching
+    - [X] Feature Detection and Matching
     - [ ] Segmentation
     - [ ] Feature-based alignment
 *** TODO Implement and describe a simple baseline
