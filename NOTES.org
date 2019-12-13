@@ -73,23 +73,35 @@ This is kind of backwards...
     - [ ] I now like to have some metrics for comparing matching algorithms.
     - [ ] Furthermore, I like to proceed with feature based alignment. Maybe building a first prototype.
 
-** TODO CW50/2019 [1/4]
+** TODO CW50/2019 [4/5]
    SCHEDULED: <2019-12-09 月> DEADLINE: <2019-12-14 土>
 *** DONE Meeting with Prof Kitamoto
     CLOSED: [2019-12-10 火 14:09] SCHEDULED: <2019-12-09 Mo>
-*** TODO Continue with "Computer Vision" book
+*** DONE Continue with "Computer Vision" book
+    CLOSED: [2019-12-13 Fr 15:32]
     - [X] Feature Detection and Matching
-    - [ ] Segmentation
-    - [ ] Feature-based alignment
-*** TODO Implement and describe a simple baseline
+    - [X] Segmentation
+    - [X] Feature-based alignment
+*** DONE Implement and describe a simple baseline
+    CLOSED: [2019-12-13 Fr 15:33]
     - I this I'll best use ORB at first
+*** DONE Finish "Computer Vision" book
+    CLOSED: [2019-12-13 Fr 15:33]
+    - [X] Skim rest of the book,
+    - [X] Especially Image-based rendering (what is this?)
 *** TODO Experiment with different Feature Detectors
     - [[https://docs.opencv.org/4.1.1/d5/d51/group__features2d__main.html][OpenCV Feature Descriptors]]
     - I think I don't need scale invariance; but I'll test this!
-** TODO CW51/2019 [0/1]
-*** TODO Finish "Computer Vision" book
-    - [ ] Skim rest of the book,
-    - [ ] Especially Image-based rendering (what is this?)
+    - [X] ORB
+    - [ ] AKAZE
+    - [ ] BRISK
+** TODO CW51/2019 [0/2]
+   SCHEDULED: <2019-12-16 Mo> DEADLINE: <2019-12-21 Sa>
+*** TODO Meeting with Prof Kitamoto
+    SCHEDULED: <2019-12-16 Mo 15:00>
+    - Prepare some slides
+    - Ask how to best proceed
+*** TODO Start with writing a first draft of research results
 ** TODO CW52/2019 [0/0]
 ** TODO CW01/2020 [0/0]
 ** TODO CW02/2020 [0/0]
