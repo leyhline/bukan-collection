@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [5/20]
+* Work Log [6/20]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
 *** DONE Manually going through Bukan Collection
@@ -73,8 +73,8 @@ This is kind of backwards...
     - [ ] I now like to have some metrics for comparing matching algorithms.
     - [ ] Furthermore, I like to proceed with feature based alignment. Maybe building a first prototype.
 
-** TODO CW50/2019 [4/5]
-   SCHEDULED: <2019-12-09 月> DEADLINE: <2019-12-14 土>
+** DONE CW50/2019 [5/5]
+   CLOSED: [2019-12-16 Mo 10:48] SCHEDULED: <2019-12-09 月> DEADLINE: <2019-12-14 土>
 *** DONE Meeting with Prof Kitamoto
     CLOSED: [2019-12-10 火 14:09] SCHEDULED: <2019-12-09 Mo>
 *** DONE Continue with "Computer Vision" book
@@ -89,16 +89,17 @@ This is kind of backwards...
     CLOSED: [2019-12-13 Fr 15:33]
     - [X] Skim rest of the book,
     - [X] Especially Image-based rendering (what is this?)
-*** TODO Experiment with different Feature Detectors
+*** DONE Experiment with different Feature Detectors
+    CLOSED: [2019-12-16 Mo 10:48]
     - [[https://docs.opencv.org/4.1.1/d5/d51/group__features2d__main.html][OpenCV Feature Descriptors]]
     - I think I don't need scale invariance; but I'll test this!
     - [X] ORB
-    - [ ] AKAZE
-    - [ ] BRISK
-** TODO CW51/2019 [0/2]
+    - [X] AKAZE
+    - [X] BRISK
+** TODO CW51/2019 [1/2]
    SCHEDULED: <2019-12-16 Mo> DEADLINE: <2019-12-21 Sa>
-*** TODO Meeting with Prof Kitamoto
-    SCHEDULED: <2019-12-16 Mo 15:00>
+*** DONE Meeting with Prof Kitamoto
+    CLOSED: [2019-12-17 Di 08:35] SCHEDULED: <2019-12-16 Mo 15:00>
     - Prepare some slides
     - Ask how to best proceed
 *** TODO Start with writing a first draft of research results
