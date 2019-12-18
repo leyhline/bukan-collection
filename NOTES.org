@@ -103,6 +103,11 @@ This is kind of backwards...
     - Prepare some slides
     - Ask how to best proceed
 *** TODO Start with writing a first draft of research results
+*** TODO Use some more matchers
+    - [ ] AKAZE with rotational invariance
+    - [ ] SIFT
+    - [ ] SURF
+*** TODO Run on more test data data
 ** TODO CW52/2019 [0/0]
 ** TODO CW01/2020 [0/0]
 ** TODO CW02/2020 [0/0]
