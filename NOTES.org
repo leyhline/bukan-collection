@@ -4,11 +4,14 @@ This is kind of backwards...
 
 * Work Log [6/20]
 ** DONE CW45/2019 [3/3]
-   CLOSED: [2019-11-11 Mo 12:34] SCHEDULED: <2019-11-04 Mo> DEADLINE: <2019-11-09 Sa>
+   CLOSED: [2019-11-11 Mo 12:34] DEADLINE: <2019-11-09 Sa> SCHEDULED: <2019-11-04 Mo>
+
 *** DONE Manually going through Bukan Collection
     CLOSED: [2019-11-08 Fr 14:51]
+
 *** DONE Skim "Digital Image Processing" book
     CLOSED: [2019-11-08 Fr 20:16]
+
     - Continuous Image Characterization
       1) Continuous Image Mathematical Characterization
       2) Psychophysical Vision Properties
@@ -18,170 +21,245 @@ This is kind of backwards...
     CLOSED: [2019-11-11 Mo 12:34]
 
 ** DONE CW46/2019 [3/3]
-   CLOSED: [2019-11-15 Fr 16:50] SCHEDULED: <2019-11-11 Mo> DEADLINE: <2019-11-16 Sa>
+   CLOSED: [2019-11-15 Fr 16:50] DEADLINE: <2019-11-16 Sa> SCHEDULED: <2019-11-11 Mo>
+
 *** DONE Continue with "Digital Image Processing
     CLOSED: [2019-11-15 Fr 16:50]
+
     - Digital Image Characterization
     - Discrete Two-Dimensional Processing
+
 *** DONE Some quantitative Image Analysis
     CLOSED: [2019-11-13 Mi 08:52]
+
     I want to get some categories for the image processing pipeline.
 
 *** DONE Look for related papers
     CLOSED: [2019-11-13 Mi 12:36]
+
     - ICDAR (International Conference on Document Analysis and Recognition)
     - CBDAR (International Workshop on Camera-Based Document Analysis)
     - Both seem to be useless at the moment
+
 ** DONE CW47/2019 [4/4]
-   CLOSED: [2019-11-25 Mo 22:05] SCHEDULED: <2019-11-18 Mo> DEADLINE: <2019-11-23 Sa>
+   CLOSED: [2019-11-25 Mo 22:05] DEADLINE: <2019-11-23 Sa> SCHEDULED: <2019-11-18 Mo>
+
 *** DONE Set up work PC
     CLOSED: [2019-11-18 Mo 11:11]
+
 *** DONE Create small subset for testing
     CLOSED: [2019-11-22 金 10:02]
+
     Use the 袖珍武鑑 (shuuchinbukan.csv) books. These are 56 editions over 89 years.
+
 *** DONE Evaluation of pHashes
     CLOSED: [2019-11-22 金 09:41]
+
     I thing I need a low-level approach here since my computer is so slow.
     So: C++/C/Rust (don't know how its FFI works here)
     *Result: Did not work*
+
 *** DONE Continue with "Digital Image Processing"
     CLOSED: [2019-11-21 木 18:46]
+
     - Image Improvement
 
 ** DONE CW48/2019 [2/2]
-   CLOSED: [2019-11-30 Sa 12:13] SCHEDULED: <2019-11-25 月> DEADLINE: <2019-11-30 土>
+   CLOSED: [2019-11-30 Sa 12:13] DEADLINE: <2019-11-30 土> SCHEDULED: <2019-11-25 月>
+
 *** DONE Manually prepare annotations for 袖珍武鑑 test set
     CLOSED: [2019-11-27 Mi 18:00]
+
 *** DONE Finish "Digital Image Processing"
     CLOSED: [2019-11-29 Fr 08:59]
+
 ** DONE CW49/2019 [4/4]
-   CLOSED: [2019-12-09 月 10:54] SCHEDULED: <2019-12-02 月> DEADLINE: <2019-12-07 土>
+   CLOSED: [2019-12-09 月 10:54] DEADLINE: <2019-12-07 土> SCHEDULED: <2019-12-02 月>
+
 *** DONE Prepare for meeting with Prof Kitamoto
-      CLOSED: [2019-12-02 Mo 20:38] SCHEDULED: <2019-12-02 月>
+    CLOSED: [2019-12-02 Mo 20:38] SCHEDULED: <2019-12-02 月>
+
 *** DONE Start with "Computer Vision" book
     CLOSED: [2019-12-09 月 10:54]
+
     - [X] Introduction
     - [X] Image formation
     - [X] Image processing
+
 *** DONE Skim OpenCV Documentation and make notes
     CLOSED: [2019-12-02 Mo 20:38]
+
     At least a few bullet points for each chapter of the official docs
+
 *** DONE Implement a first feature matching algorithm
     CLOSED: [2019-12-09 月 10:54]
+
     Starting out with the OpenCV tutorials
     - [X] I used ORB because not patented and from OpenCV itself. Matching looks good.
     - [ ] I now like to have some metrics for comparing matching algorithms.
     - [ ] Furthermore, I like to proceed with feature based alignment. Maybe building a first prototype.
 
 ** DONE CW50/2019 [5/5]
-   CLOSED: [2019-12-16 Mo 10:48] SCHEDULED: <2019-12-09 月> DEADLINE: <2019-12-14 土>
+   CLOSED: [2019-12-16 Mo 10:48] DEADLINE: <2019-12-14 土> SCHEDULED: <2019-12-09 月>
+
 *** DONE Meeting with Prof Kitamoto
     CLOSED: [2019-12-10 火 14:09] SCHEDULED: <2019-12-09 Mo>
+
 *** DONE Continue with "Computer Vision" book
     CLOSED: [2019-12-13 Fr 15:32]
+
     - [X] Feature Detection and Matching
     - [X] Segmentation
     - [X] Feature-based alignment
+
 *** DONE Implement and describe a simple baseline
     CLOSED: [2019-12-13 Fr 15:33]
+
     - I this I'll best use ORB at first
+
 *** DONE Finish "Computer Vision" book
     CLOSED: [2019-12-13 Fr 15:33]
+
     - [X] Skim rest of the book,
     - [X] Especially Image-based rendering (what is this?)
+
 *** DONE Experiment with different Feature Detectors
     CLOSED: [2019-12-16 Mo 10:48]
+
     - [[https://docs.opencv.org/4.1.1/d5/d51/group__features2d__main.html][OpenCV Feature Descriptors]]
     - I think I don't need scale invariance; but I'll test this!
     - [X] ORB
     - [X] AKAZE
     - [X] BRISK
+
 ** TODO CW51/2019 [1/2]
-   SCHEDULED: <2019-12-16 Mo> DEADLINE: <2019-12-21 Sa>
+   DEADLINE: <2019-12-21 Sa> SCHEDULED: <2019-12-16 Mo>
+
 *** DONE Meeting with Prof Kitamoto
     CLOSED: [2019-12-17 Di 08:35] SCHEDULED: <2019-12-16 Mo 15:00>
+
     - Prepare some slides
     - Ask how to best proceed
+
 *** TODO Start with writing a first draft of research results
+*** TODO Pipeline Optimizations
 *** TODO Use some more matchers
+
     - [ ] AKAZE with rotational invariance
     - [ ] SIFT
     - [ ] SURF
+
 *** TODO Run on more test data data
 ** TODO CW52/2019 [0/0]
-** TODO CW01/2020 [0/0]
-** TODO CW02/2020 [0/0]
-** TODO CW03/2020 [0/0]
-** TODO CW04/2020 [0/0]
-** TODO CW05/2020 [0/0]
-** TODO CW06/2020 [0/0]
-** TODO CW07/2020 [0/0]
-** TODO CW08/2020 [0/0]
-** TODO CW09/2020 [0/0]
-** TODO CW10/2020 [0/0]
-** TODO CW11/2020 [0/0]
-** TODO CW12/2020 [0/0]
+   DEADLINE: <2019-12-28 Sat> SCHEDULED: <2019-12-23 Mon>
 
+** HOLIDAY CW01/2020
+** TODO CW02/2020 [0/0]
+   DEADLINE: <2020-01-11 Sat> SCHEDULED: <2020-01-06 Mon>
+
+** TODO CW03/2020 [0/0]
+   DEADLINE: <2020-01-18 Sat> SCHEDULED: <2020-01-13 Mon>
+
+** TODO CW04/2020 [0/0]
+   DEADLINE: <2020-01-25 Sat> SCHEDULED: <2020-01-20 Mon>
+
+** TODO CW05/2020 [0/0]
+   DEADLINE: <2020-02-01 Sat> SCHEDULED: <2020-01-27 Mon>
+
+** TODO CW06/2020 [0/0]
+   DEADLINE: <2020-02-08 Sat> SCHEDULED: <2020-02-03 Mon>
+
+** TODO CW07/2020 [0/0]
+   DEADLINE: <2020-02-15 Sat> SCHEDULED: <2020-02-10 Mon>
+
+** TODO CW08/2020 [0/0]
+   DEADLINE: <2020-02-22 Sat> SCHEDULED: <2020-02-17 Mon>
+
+** TODO CW09/2020 [0/0]
+   DEADLINE: <2020-02-29 Sat> SCHEDULED: <2020-02-24 Mon>
+
+** TODO CW10/2020 [0/0]
+   DEADLINE: <2020-03-07 Sat> SCHEDULED: <2020-03-02 Mon>
+
+** TODO CW11/2020 [0/0]
+   DEADLINE: <2020-03-14 Sat> SCHEDULED: <2020-03-09 Mon>
+
+** TODO CW12/2020 [0/0]
+   SCHEDULED: <2020-03-16 Mon>
 
 * Overview
+
 We have 366 scanned books with around 90,000 pages. Now we want to find some links for better understanding the data.
 
 *We have no ground truth!*
 
 So first, let's apply some techniques from classical image processing.
 
-
 * Problems
 ** Easy?
+
    Seem to be solved with standard tools; just need to find the right parameters.
    - Page detection
+
 ** Medium?
+
    There are some current papers on this; harder than it seems but there are some working approaches.
    - Page binarization
+
 ** Hard?
+
    There are no (useful) existing approaches and therefore no existing tools.
    But it seems this isn't the problem here. The task is /too easy/. ;)
 
-
 * Various Open Questions
+
   - [X] Is there a difference between simple 武鑑 and 武鑑大全?
     Not sure, maybe just a different edition.
 
-    
 * Historical and Cultural Background
 ** TODO Visit woodblock printing museums [0/3]
 *** TODO [[http://www.ukiyoe-ota-muse.jp/][Ota Memorial Museum of Art]]
 *** TODO [[https://www.printing-museum.org/][Printing Museum]]
 *** TODO [[https://hokusai-museum.jp/][Sumida Hokusai Museum]]
 ** Reading some Books
+
    - [X] The Elements of Japanese Design
 
-    
 * Working with the Data itself
 ** TODO Manually examine the collection [66%]
 *** DONE Usable in general? [352/366]
     CLOSED: [2019-11-08 Fr 08:10]
+
 *** TODO Measurements of the books [0/366]
+
     Width, height and position and maybe center line
     But it should be possible to just automate this
-*** DONE Automatic filtering the books by quantitative measures 
+
+*** DONE Automatic filtering the books by quantitative measures
     CLOSED: [2019-11-21 木 18:50]
+
     - Do we have enough books from the same location?
     - Does the number of pages match?
 
-      
 * Technical Stuff
 ** Preprocessing
 *** DONE Convert to Greyscale
     CLOSED: [2019-11-30 Sa 12:17]
+
     Do this in memory
+
 *** TODO Convert to binary (Black/White)
+
     You might want to use Histograms for finding good thresholds
     "Document Image Binarization"
+
 ** DONE Finding Major Differences
    CLOSED: [2019-11-22 金 09:40]
+
    With perceptual hashes using [[https://phash.org/][pHash]]
    *Result: Did not work!*
+
 ** Finding Minor Differences
+
    Aligning/Registering the images and doing pixelwise comparison
-   
+
