@@ -176,13 +176,13 @@ def validate_cross_matches(matches_dataframe, original_ndarray):
 
 
 @timeit
-def cross_match(descriptors_df, validate=False):
+def cross_match(descriptors_df, validate=False, norm_type=cv.NORM_HAMMING):
     nr_pages, nr_book_ids = descriptors_df.shape
     nr_distances = 16
     # Allocate memory for all descriptors
     matches = np.full((nr_book_ids, nr_pages, nr_book_ids, nr_pages, nr_distances),
                       np.nan, dtype=np.float32)
-    bfmatcher = cv.BFMatcher(cv.NORM_HAMMING, crossCheck=True)
+    bfmatcher = cv.BFMatcher(norm_type, crossCheck=True)
     distance_getter = operator.attrgetter("distance")
     for query_i, (_, query_pages) in log_progress(enumerate(descriptors_df.items()),
                                                   every=1, size=nr_book_ids, name="Books"):
@@ -251,7 +251,7 @@ def precision_recall_curves(matches_df, start, stop, step):
     results = []
     for book1_id, book2_id in itertools.combinations(matches_df.index.levels[0], 2):
         good, bad = compare_books(book1_id, book2_id, matches_df)
-        for threshold in range(start, stop, step):
+        for threshold in np.arange(start, stop, step):
             nr_true_positives, nr_cond_positives = threshold_distances(good, threshold)
             nr_false_positives, nr_cond_negatives = threshold_distances(bad, threshold)
             precision, recall = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)

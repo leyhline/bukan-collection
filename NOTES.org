@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [6/20]
+* Work Log [7/19]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] DEADLINE: <2019-11-09 Sa> SCHEDULED: <2019-11-04 Mo>
 
@@ -132,8 +132,8 @@ This is kind of backwards...
     - [X] AKAZE
     - [X] BRISK
 
-** TODO CW51/2019 [1/2]
-   DEADLINE: <2019-12-21 Sa> SCHEDULED: <2019-12-16 Mo>
+** DONE CW51/2019 [3/3]
+   CLOSED: [2019-12-20 金 16:33] DEADLINE: <2019-12-21 Sa> SCHEDULED: <2019-12-16 Mo>
 
 *** DONE Meeting with Prof Kitamoto
     CLOSED: [2019-12-17 Di 08:35] SCHEDULED: <2019-12-16 Mo 15:00>
@@ -141,17 +141,19 @@ This is kind of backwards...
     - Prepare some slides
     - Ask how to best proceed
 
-*** TODO Start with writing a first draft of research results
-*** TODO Pipeline Optimizations
-*** TODO Use some more matchers
+*** DONE Start with writing a first draft of research results
+    CLOSED: [2019-12-20 金 16:32]
+*** DONE Use some more matchers
+    CLOSED: [2019-12-20 金 16:32]
 
-    - [ ] AKAZE with rotational invariance
-    - [ ] SIFT
-    - [ ] SURF
+    - [X] AKAZE with rotational invariance
+    - [X] SIFT
+    - [X] SURF
 
-*** TODO Run on more test data data
-** TODO CW52/2019 [0/0]
+** TODO CW52/2019 [0/2]
    DEADLINE: <2019-12-28 Sat> SCHEDULED: <2019-12-23 Mon>
+*** TODO Pipeline Optimizations
+*** TODO Run on more test data data
 
 ** HOLIDAY CW01/2020
 ** TODO CW02/2020 [0/0]
