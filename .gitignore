@@ -2,6 +2,8 @@
 
 # Data folder
 data/
+output/
+/*.ps1
 *.pdf
 
 ## Byte-compiled / optimized / DLL files
