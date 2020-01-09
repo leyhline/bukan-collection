@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [7/19]
+* Work Log [9/19]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] DEADLINE: <2019-11-09 Sa> SCHEDULED: <2019-11-04 Mo>
 
@@ -150,14 +150,30 @@ This is kind of backwards...
     - [X] SIFT
     - [X] SURF
 
-** TODO CW52/2019 [0/2]
-   DEADLINE: <2019-12-28 Sat> SCHEDULED: <2019-12-23 Mon>
-*** TODO Pipeline Optimizations
-*** TODO Run on more test data data
+** DONE CW52/2019 [2/2]
+   CLOSED: [2020-01-07 火 09:45] DEADLINE: <2019-12-28 Sat> SCHEDULED: <2019-12-23 Mon>
+*** DONE Pipeline Optimizations
+    CLOSED: [2020-01-07 火 09:45]
+*** DONE Run on more test data data
+    CLOSED: [2020-01-07 火 09:45]
 
+*** DONE Filter out one- and two-paged images
+*** DONE Calculate page averages
+    Just for fun. Doesn't seem to be meaningful.
 ** HOLIDAY CW01/2020
-** TODO CW02/2020 [0/0]
-   DEADLINE: <2020-01-11 Sat> SCHEDULED: <2020-01-06 Mon>
+** DONE CW02/2020 [3/3]
+   CLOSED: [2020-01-09 木 10:06] DEADLINE: <2020-01-11 Sat> SCHEDULED: <2020-01-06 Mon>
+*** DONE Meeting with the Prof
+    CLOSED: [2020-01-09 木 10:05]
+    Preparing two presentations:
+    - [X] A general introduction of the topic
+    - [X] My current results
+*** DONE Examining pipeline
+    CLOSED: [2020-01-09 木 10:06]
+    Which step produces which effect?
+*** DONE Examining some particular images 
+    CLOSED: [2020-01-09 木 10:06]
+    It's not only about the numbers. I need to see which images succeeded and failed.
 
 ** TODO CW03/2020 [0/0]
    DEADLINE: <2020-01-18 Sat> SCHEDULED: <2020-01-13 Mon>
