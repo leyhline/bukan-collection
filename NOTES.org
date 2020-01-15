@@ -175,8 +175,13 @@ This is kind of backwards...
     CLOSED: [2020-01-09 木 10:06]
     It's not only about the numbers. I need to see which images succeeded and failed.
 
-** TODO CW03/2020 [0/0]
+** TODO CW03/2020 [0/5]
    DEADLINE: <2020-01-18 Sat> SCHEDULED: <2020-01-13 Mon>
+*** TODO Cleaning up code
+*** TODO How to build a system out of this?
+*** TODO Major Bukan Version recognition possible?
+*** TODO Visualizing changes
+*** TODO Run on full dataset
 
 ** TODO CW04/2020 [0/0]
    DEADLINE: <2020-01-25 Sat> SCHEDULED: <2020-01-20 Mon>
@@ -213,6 +218,8 @@ We have 366 scanned books with around 90,000 pages. Now we want to find some lin
 
 So first, let's apply some techniques from classical image processing.
 
+Since this worked out better than expected, let's see how one might use this for building a Bukan comparison platform out of this.
+
 * Problems
 ** Easy?
 
@@ -223,6 +230,9 @@ So first, let's apply some techniques from classical image processing.
 
    There are some current papers on this; harder than it seems but there are some working approaches.
    - Page binarization
+   - Visualization of image changes. This shouldn't be too sensitive to pixel changes.
+     If thresholding and opening/closing doesn't work I'm out of ideas. Maybe it is also
+     possible to just paint a rectangle around some cluster of matches...
 
 ** Hard?
 
@@ -242,22 +252,19 @@ So first, let's apply some techniques from classical image processing.
 ** Reading some Books
 
    - [X] The Elements of Japanese Design
+   - [ ] A Modern History of Japan
 
 * Working with the Data itself
 ** TODO Manually examine the collection [66%]
 *** DONE Usable in general? [352/366]
     CLOSED: [2019-11-08 Fr 08:10]
 
-*** TODO Measurements of the books [0/366]
-
-    Width, height and position and maybe center line
-    But it should be possible to just automate this
-
 *** DONE Automatic filtering the books by quantitative measures
     CLOSED: [2019-11-21 木 18:50]
 
     - Do we have enough books from the same location?
     - Does the number of pages match?
+*** TODO Annotate books with two pages per picture
 
 * Technical Stuff
 ** Preprocessing
@@ -277,7 +284,8 @@ So first, let's apply some techniques from classical image processing.
    With perceptual hashes using [[https://phash.org/][pHash]]
    *Result: Did not work!*
 
-** Finding Minor Differences
+** DONE Finding Minor Differences
+   CLOSED: [2020-01-15 水 15:10]
 
    Aligning/Registering the images and doing pixelwise comparison
 
