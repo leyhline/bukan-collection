@@ -106,8 +106,16 @@ def find_matches(book1, book2, page_book1, page_offset, page_book2, env):
     if page_book2 == 0:
         return np.nan
     else:
-        desc_book1 = env["descriptors"][book1][page_book1]
-        desc_book2 = env["descriptors"][book2][page_book2]
+        try:
+            desc_book1 = env["descriptors"][book1][page_book1]
+        except KeyError:
+            #print(f"No features for book {book1}, page {page_book1}: Returning empty list.")
+            return []
+        try:
+            desc_book2 = env["descriptors"][book2][page_book2]
+        except KeyError:
+            #print(f"No features for book {book2}, page {page_book2}: Returning empty list.")
+            return []
         if isinstance(desc_book1, np.ndarray) and isinstance(desc_book2, np.ndarray):
             matches = env["matcher"].radiusMatch(desc_book1, desc_book2, env["max_distance"], compactResult=True)
             return list(chain.from_iterable(matches))
