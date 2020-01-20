@@ -1,13 +1,18 @@
+import os.path
 import pandas as pd
 import cv2 as cv
 from flask import Flask, render_template, make_response
 
 
-app = Flask(__name__)
-bukan_df = pd.read_parquet("output/matching/concatenated.parquet.gzip", engine="pyarrow")
-keypoints_df = pd.read_parquet("output/matching/keypoints.parquet.gzip", engine="pyarrow")
+bukan_data_path = "output/matching/concatenated.parquet.gzip"
+assert os.path.exists(bukan_data_path)
+keypoints_path = "output/matching/keypoints.parquet.gzip"
+assert os.path.exists(keypoints_path)
+bukan_df = pd.read_parquet(bukan_data_path, engine="pyarrow")
+keypoints_df = pd.read_parquet(keypoints_path, engine="pyarrow")
 bukan_nr_matches_s = bukan_df["distance"].groupby(['bukan', 'book1', 'page1', 'book2', 'page2']).count().rename("matches")
 bukan_nr_matching_pages_s = bukan_nr_matches_s.groupby("bukan").count().rename("pages")
+app = Flask(__name__)
 
 
 def crop_image(img, horizontal_factor=0.1, vertical_factor=0.15):
@@ -32,6 +37,17 @@ def keypoints_df_to_list(keypoints_df):
             in zip(*(column for _, column in keypoints_df.items()))]
 
 
+def create_match_image(book1_id, book1_page, book2_id, book2_page, matches):
+    img1 = read_image(f"data/{book1_id}/image/{book1_id}_{book1_page:0>5}.jpg")
+    img2 = read_image(f"data/{book2_id}/image/{book2_id}_{book2_page:0>5}.jpg")
+    keypoints1 = keypoints_df_to_list(keypoints_df.loc[(int(book1_id), int(book1_page))])
+    keypoints2 = keypoints_df_to_list(keypoints_df.loc[(int(book2_id), int(book2_page))])
+    match_img = cv.drawMatches(img1, keypoints1, img2, keypoints2, matches, None)
+    enc_result, match_img = cv.imencode(".jpg", match_img)
+    assert enc_result
+    return match_img.tobytes()
+
+
 @app.route("/")
 def index():
     return render_template("index.html", bukans=bukan_nr_matching_pages_s.items())
@@ -47,13 +63,7 @@ def bukan_match(bukan_title, book1_id, book1_page, book2_id, book2_page):
     indexer = (bukan_title, int(book1_id), int(book1_page), int(book2_id), int(book2_page))
     matches_df = bukan_df.loc[indexer]
     matches = matches_df_to_list(matches_df)
-    img1 = read_image(f"data/{book1_id}/image/{book1_id}_{book1_page:0>5}.jpg")
-    img2 = read_image(f"data/{book2_id}/image/{book2_id}_{book2_page:0>5}.jpg")
-    keypoints1 = keypoints_df_to_list(keypoints_df.loc[(int(book1_id), int(book1_page))])
-    keypoints2 = keypoints_df_to_list(keypoints_df.loc[(int(book2_id), int(book2_page))])
-    match_img = cv.drawMatches(img1, keypoints1, img2, keypoints2, matches, None)
-    enc_result, match_img = cv.imencode(".jpg", match_img)
-    assert enc_result
-    response = make_response(match_img.tobytes())
+    match_img = create_match_image(book1_id, book1_page, book2_id, book2_page, matches)
+    response = make_response(match_img)
     response.content_type = "image/jpeg"
     return response
