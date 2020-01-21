@@ -143,6 +143,7 @@ This is kind of backwards...
 
 *** DONE Start with writing a first draft of research results
     CLOSED: [2019-12-20 金 16:32]
+
 *** DONE Use some more matchers
     CLOSED: [2019-12-20 金 16:32]
 
@@ -152,40 +153,60 @@ This is kind of backwards...
 
 ** DONE CW52/2019 [2/2]
    CLOSED: [2020-01-07 火 09:45] DEADLINE: <2019-12-28 Sat> SCHEDULED: <2019-12-23 Mon>
+
 *** DONE Pipeline Optimizations
     CLOSED: [2020-01-07 火 09:45]
+
 *** DONE Run on more test data data
     CLOSED: [2020-01-07 火 09:45]
 
 *** DONE Filter out one- and two-paged images
 *** DONE Calculate page averages
+
     Just for fun. Doesn't seem to be meaningful.
+
 ** HOLIDAY CW01/2020
 ** DONE CW02/2020 [3/3]
    CLOSED: [2020-01-09 木 10:06] DEADLINE: <2020-01-11 Sat> SCHEDULED: <2020-01-06 Mon>
+
 *** DONE Meeting with the Prof
     CLOSED: [2020-01-09 木 10:05]
+
     Preparing two presentations:
     - [X] A general introduction of the topic
     - [X] My current results
+
 *** DONE Examining pipeline
     CLOSED: [2020-01-09 木 10:06]
+
     Which step produces which effect?
-*** DONE Examining some particular images 
+
+*** DONE Examining some particular images
     CLOSED: [2020-01-09 木 10:06]
+
     It's not only about the numbers. I need to see which images succeeded and failed.
 
-** TODO CW03/2020 [0/5]
-   DEADLINE: <2020-01-18 Sat> SCHEDULED: <2020-01-13 Mon>
-*** TODO Cleaning up code
-*** TODO How to build a system out of this?
-*** TODO Major Bukan Version recognition possible?
-*** TODO Visualizing changes
-*** TODO Run on full dataset
+** DONE CW03/2020 [3/3]
+   CLOSED: [2020-01-21 Tue 11:56] DEADLINE: <2020-01-18 Sat> SCHEDULED: <2020-01-13 Mon>
 
-** TODO CW04/2020 [0/0]
+*** DONE Cleaning up code
+    CLOSED: [2020-01-21 Tue 11:54]
+
+*** DONE How to build a system out of this?
+    CLOSED: [2020-01-21 Tue 11:54]
+
+*** DONE Run on full dataset
+    CLOSED: [2020-01-21 Tue 11:55]
+
+** TODO CW04/2020 [0/4]
    DEADLINE: <2020-01-25 Sat> SCHEDULED: <2020-01-20 Mon>
 
+*** TODO Major Bukan Version recognition possible?
+*** TODO Visualizing changes
+*** TODO Meeting with Prof
+    SCHEDULED: <2020-01-23 Thu 15:00>
+
+*** TODO Writing report
 ** TODO CW05/2020 [0/0]
    DEADLINE: <2020-02-01 Sat> SCHEDULED: <2020-01-27 Mon>
 
@@ -264,8 +285,8 @@ Since this worked out better than expected, let's see how one might use this for
 
     - Do we have enough books from the same location?
     - Does the number of pages match?
-*** TODO Annotate books with two pages per picture
 
+*** TODO Annotate books with two pages per picture
 * Technical Stuff
 ** Preprocessing
 *** DONE Convert to Greyscale
@@ -277,6 +298,7 @@ Since this worked out better than expected, let's see how one might use this for
 
     You might want to use Histograms for finding good thresholds
     "Document Image Binarization"
+... Adaptive Thresholding 
 
 ** DONE Finding Major Differences
    CLOSED: [2019-11-22 金 09:40]
