@@ -1,0 +1,6 @@
+pandas
+jupyter
+matplotlib
+Flask
+opencv-python
+pyarrow
