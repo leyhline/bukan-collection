@@ -15,28 +15,22 @@
       <p class="subtitle">
         Database of matching pages based on the woodblock used for printing.
       </p>
-      <p class="content">
-        These are different types of Bukan. There are multiple books of each type. The page of each book might match a page of a different book because it was made using the same woodblock.
-      </p>
-      <table class="table" id="table">
+      <table class="table">
         <thead>
           <tr>
-            <td>Bukan</td>
-            <td>Matching Pages</td>
+            <td>Book ID</td>
           </tr>
         </thead>
         <tbody>
-          {% for bukan_title, nr_matching_pages in bukans %}
+          {% for book_id in book_ids %}
           <tr>
-            <td><a href="bukan/{{bukan_title}}">{{ bukan_title }}</a></td>
-            <td>{{nr_matching_pages}}</td>
+            <td><a href="/book/{{book_id}}">{{book_id}}</a></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </section>
-  
 </body>
 
 </html>

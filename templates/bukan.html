@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+  <title>武鑑 - Exploring the Bukan Collection</title>
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title"><a href="/">武鑑</a> Exploring the Bukan Collection</h1>
+      <p class="subtitle">
+        Database of matching pages based on the woodblock used for printing.
+      </p>
+      <p class="content">
+        Each row is a match between two Bukan books' pages. By clicking on the <em>Missing Features</em> column you can see the visualization of the feature matches.
+      </p>
+      <table class="table is-narrow is-hoverable">
+        <thead>
+          <tr>
+            <td>1st Book ID</td>
+            <td>1st Book Page</td>
+            <td>2nd Book ID</td>
+            <td>2nd Book Page</td>
+            <td>Matching Features</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for (book1_id, book1_page, book2_id, book2_page), nr_matching_points in matches %}
+          <tr>
+            <td>
+              {{book1_id}}
+              <a href="/book/{{book1_id}}" class="icon ">⇗</a>
+            </td>
+            <td>{{book1_page}}</td>
+            <td>
+              {{book2_id}}
+              <a href="/book/{{book2_id}}" class="icon ">⇗</a>
+            </td>
+            <td>{{book2_page}}</td>
+            <td ><a href="/matches/{{book1_id}}/{{book1_page}}/{{book2_id}}/{{book2_page}}">{{nr_matching_points}}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</body>
+
+</html>

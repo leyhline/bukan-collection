@@ -9,9 +9,28 @@ assert os.path.exists(bukan_data_path)
 keypoints_path = "output/matching/keypoints.parquet.gzip"
 assert os.path.exists(keypoints_path)
 bukan_df = pd.read_parquet(bukan_data_path, engine="pyarrow")
+matches_df = bukan_df.droplevel(0).sort_index()
 keypoints_df = pd.read_parquet(keypoints_path, engine="pyarrow")
 bukan_nr_matches_s = bukan_df["distance"].groupby(['bukan', 'book1', 'page1', 'book2', 'page2']).count().rename("matches")
 bukan_nr_matching_pages_s = bukan_nr_matches_s.groupby("bukan").count().rename("pages")
+
+
+def create_matching_book_dict(matches_df):
+    matching_ids_table = matches_df.index.droplevel([1, 3, 4]).drop_duplicates()
+    matching_ids = {}
+    for book1_id, book2_id in matching_ids_table:
+        if book1_id in matching_ids:
+            matching_ids[book1_id].add(book2_id)
+        else:
+            matching_ids[book1_id] = {book2_id}
+        if book2_id in matching_ids:
+            matching_ids[book2_id].add(book1_id)
+        else:
+            matching_ids[book2_id] = {book1_id}
+    return matching_ids
+
+
+matching_ids = create_matching_book_dict(matches_df)
 app = Flask(__name__)
 
 
@@ -55,15 +74,22 @@ def index():
 
 @app.route("/bukan/<bukan_title>")
 def bukan(bukan_title):
-    return bukan_nr_matches_s[bukan_title].to_frame().to_html()
+    nr_matches = bukan_nr_matches_s[bukan_title]
+    return render_template("bukan.html", matches=nr_matches.items())
 
 
-@app.route("/bukan/<bukan_title>/<book1_id>/<book1_page>/<book2_id>/<book2_page>")
-def bukan_match(bukan_title, book1_id, book1_page, book2_id, book2_page):
-    indexer = (bukan_title, int(book1_id), int(book1_page), int(book2_id), int(book2_page))
-    matches_df = bukan_df.loc[indexer]
-    matches = matches_df_to_list(matches_df)
+@app.route("/matches/<book1_id>/<book1_page>/<book2_id>/<book2_page>")
+def matches(book1_id, book1_page, book2_id, book2_page):
+    indexer = (int(book1_id), int(book1_page), int(book2_id), int(book2_page))
+    page_matches_df = matches_df.loc[indexer]
+    matches = matches_df_to_list(page_matches_df)
     match_img = create_match_image(book1_id, book1_page, book2_id, book2_page, matches)
     response = make_response(match_img)
     response.content_type = "image/jpeg"
     return response
+
+
+@app.route("/book/<book_id>")
+def book(book_id):
+    book_id_set = matching_ids[int(book_id)]
+    return render_template("book.html", book_ids=book_id_set)
