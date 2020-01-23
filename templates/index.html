@@ -1,22 +1,38 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
-    <title>武鑑 - Exploring the Bukan Collection</title>
-  </head>
-  <body>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+  <title>武鑑 - Exploring the Bukan Collection</title>
+</head>
+
+<body>
+  <section class="section">
     <div class="container">
-        <h1>武鑑</h1>
-        <hr />
-        <ul class="list-group">
-            {% for bukan_title, nr_matching_pages in bukans %}
-                <li class="list-group-item"><a href="bukan/{{bukan_title}}">{{ bukan_title }}</a> ({{nr_matching_pages}} matching pages)</li>
-            {% endfor %}
-        </ul>
+      <h1 class="title">武鑑 Exploring the Bukan Collection</h1>
+      <p class="subtitle">
+        Database of matching pages based on the woodblock used for printing.
+      </p>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Bukan</td>
+            <td>Matching Pages</td>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bukan_title, nr_matching_pages in bukans %}
+          <tr>
+            <td><a href="bukan/{{bukan_title}}">{{ bukan_title }}</a></td>
+            <td>{{nr_matching_pages}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    <script src="{{ url_for('static', filename='jquery-3.4.1.slim.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
-  </body>
+  </section>
+</body>
+
 </html>
