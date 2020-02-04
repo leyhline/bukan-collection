@@ -4,46 +4,13 @@ import cv2 as cv
 from flask import Flask, render_template, make_response
 
 
-bukan_data_path = "output/matching/concatenated.parquet.gzip"
-assert os.path.exists(bukan_data_path)
-keypoints_path = "output/matching/keypoints.parquet.gzip"
-assert os.path.exists(keypoints_path)
-bukan_df = pd.read_parquet(bukan_data_path, engine="pyarrow")
-matches_df = bukan_df.droplevel(0).sort_index()
-keypoints_df = pd.read_parquet(keypoints_path, engine="pyarrow")
-bukan_nr_matches_s = bukan_df["distance"].groupby(['bukan', 'book1', 'page1', 'book2', 'page2']).count().rename("matches")
-bukan_nr_matching_pages_s = bukan_nr_matches_s.groupby("bukan").count().rename("pages")
+bukan_overview_path = "output/grey/overview.parquet"
+assert os.path.exists(bukan_overview_path)
+overview_df = pd.read_parquet(bukan_overview_path)
+bukan_title_df = overview_df.groupby(["Title", "TitleHiragana", "TitleRomanji"]).count()["Release"]
+bukan_data = {}
 
-
-def create_matching_book_dict(matches_df):
-    matching_ids_table = matches_df.index.droplevel([1, 3, 4]).drop_duplicates()
-    matching_ids = {}
-    for book1_id, book2_id in matching_ids_table:
-        if book1_id in matching_ids:
-            matching_ids[book1_id].add(book2_id)
-        else:
-            matching_ids[book1_id] = {book2_id}
-        if book2_id in matching_ids:
-            matching_ids[book2_id].add(book1_id)
-        else:
-            matching_ids[book2_id] = {book1_id}
-    return matching_ids
-
-
-matching_ids = create_matching_book_dict(matches_df)
 app = Flask(__name__)
-
-
-def crop_image(img, horizontal_factor=0.1, vertical_factor=0.15):
-    height, width = img.shape
-    return img[int(height * vertical_factor) : int(height - height * vertical_factor),
-               int(width * horizontal_factor): int(width - width * horizontal_factor)]
-
-
-def read_image(path):
-    img = cv.imread(path, flags=cv.IMREAD_REDUCED_GRAYSCALE_4)
-    img = crop_image(img)
-    return img
 
 
 def matches_df_to_list(matches_df):
@@ -69,17 +36,34 @@ def create_match_image(book1_id, book1_page, book2_id, book2_page, matches):
 
 @app.route("/")
 def index():
-    return render_template("index.html", bukans=bukan_nr_matching_pages_s.items())
+    return render_template("index.html", bukans=bukan_title_df.items())
 
 
 @app.route("/bukan/<bukan_title>")
 def bukan(bukan_title):
-    nr_matches = bukan_nr_matches_s[bukan_title]
-    return render_template("bukan.html", matches=nr_matches.items())
+    if bukan_title in bukan_data:
+        matches = bukan_data[bukan_title]
+    else:
+        matches = pd.read_parquet(f"output/grey/{bukan_title}.parquet")
+        bukan_data[bukan_title] = matches
+    matches_index = (matches
+        .index.droplevel(["title","match"])
+        .unique()
+        .reorder_levels(["book1", "page1", "book2", "page2", "lr"])
+        .sort_values())
+    title = bukan_title_df.index[bukan_title_df.index.get_level_values("TitleRomanji") == bukan_title][0]
+    return render_template("bukan.html", matches=matches_index, title=title)
 
 
-@app.route("/matches/<book1_id>/<book1_page>/<book2_id>/<book2_page>")
-def matches(book1_id, book1_page, book2_id, book2_page):
+@app.route("/bukan/<bukan_title>/<book1_id>/<book1_page>/<book2_id>/<book2_page>/<lr>")
+def matches(bukan_title, book1_id, book1_page, book2_id, book2_page, lr):
+    if bukan_title in bukan_data:
+        matches = bukan_data[bukan_title]
+    else:
+        matches = pd.read_parquet(f"output/grey/{bukan_title}.parquet")
+        bukan_data[bukan_title] = matches
+
+
     indexer = (int(book1_id), int(book1_page), int(book2_id), int(book2_page))
     page_matches_df = matches_df.loc[indexer]
     matches = matches_df_to_list(page_matches_df)
@@ -89,7 +73,5 @@ def matches(book1_id, book1_page, book2_id, book2_page):
     return response
 
 
-@app.route("/book/<book_id>")
-def book(book_id):
-    book_id_set = matching_ids[int(book_id)]
-    return render_template("book.html", book_ids=book_id_set)
+if __name__ == "__main__":
+    app.run(threaded=False)

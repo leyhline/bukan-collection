@@ -5,43 +5,47 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
-  <title>武鑑 - Exploring the Bukan Collection</title>
+  <title>武鑑 Exploring the Bukan Collection</title>
 </head>
 
 <body>
   <section class="section">
     <div class="container">
-      <h1 class="title"><a href="/">武鑑</a> Exploring the Bukan Collection</h1>
+      <h1 class="title">武鑑 Exploring the Bukan Collection</h1>
       <p class="subtitle">
-        Database of matching pages based on the woodblock used for printing.
+        <a href="/"><ruby>書名<rt>TITLE</rt></ruby></a>
+        <span> / </span>
+        <a href="/bukan/{{ title[2] }}"><ruby>{{ title[0] }}<rt>{{ title[2].upper() }}</rt></ruby></a>
       </p>
       <p class="content">
-        Each row is a match between two Bukan books' pages. By clicking on the <em>Missing Features</em> column you can see the visualization of the feature matches.
+        Each row is a match between two Bukan books' pages. Clicking on a table row opens the corresponding visualization.
       </p>
       <table class="table is-narrow is-hoverable">
         <thead>
           <tr>
-            <td>1st Book ID</td>
-            <td>1st Book Page</td>
-            <td>2nd Book ID</td>
-            <td>2nd Book Page</td>
-            <td>Matching Features</td>
+            <td />
+            <td colspan="2">1<sup>st</sup> Book</td>
+            <td colspan="2">2<sup>nd</sup> Book</td>
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td>ID</td>
+            <td>Page</td>
+            <td>ID</td>
+            <td>Page</td>
+            <td>Location</td>
           </tr>
         </thead>
         <tbody>
-          {% for (book1_id, book1_page, book2_id, book2_page), nr_matching_points in matches %}
+          {% for book1_id, book1_page, book2_id, book2_page, lr in matches %}
           <tr>
-            <td>
-              {{book1_id}}
-              <a href="/book/{{book1_id}}" class="icon ">⇗</a>
-            </td>
+            <td><a href="/bukan/{{title[2]}}/{{book1_id}}/{{book1_page}}/{{book2_id}}/{{book2_page}}/{{lr}}" class="tag is-link is-light">View</a></td>
+            <td>{{book1_id}}</td>
             <td>{{book1_page}}</td>
-            <td>
-              {{book2_id}}
-              <a href="/book/{{book2_id}}" class="icon ">⇗</a>
-            </td>
+            <td>{{book2_id}}</td>
             <td>{{book2_page}}</td>
-            <td ><a href="/matches/{{book1_id}}/{{book1_page}}/{{book2_id}}/{{book2_page}}">{{nr_matching_points}}</a></td>
+            <td >{% if lr == 1 %} right {% elif lr == 2 %} left {% else %} normal {% endif %}</td>
           </tr>
           {% endfor %}
         </tbody>

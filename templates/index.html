@@ -5,31 +5,35 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
-  <title>武鑑 - Exploring the Bukan Collection</title>
+  <title>武鑑 Exploring the Bukan Collection</title>
 </head>
 
 <body>
   <section class="section">
     <div class="container">
-      <h1 class="title"><a href="/">武鑑</a> Exploring the Bukan Collection</h1>
+      <h1 class="title">武鑑 Exploring the Bukan Collection</h1>
       <p class="subtitle">
-        Database of matching pages based on the woodblock used for printing.
+        <a href="/"><ruby>書名<rt>TITLE</rt></ruby></a>
       </p>
       <p class="content">
-        These are different types of Bukan. There are multiple books of each type. The page of each book might match a page of a different book because it was made using the same woodblock.
+        These are different Bukan books. Each title has a number of editions that might differ. The page of each book might match a page of a different book of the same title because it was made using the same woodblock.
       </p>
       <table class="table" id="table">
         <thead>
           <tr>
-            <td>Bukan</td>
-            <td>Matching Pages</td>
+            <td>Bukan Title</td>
+            <td>in Hiragana</td>
+            <td>in Romanji</td>
+            <td>Number of Books</td>
           </tr>
         </thead>
         <tbody>
-          {% for bukan_title, nr_matching_pages in bukans %}
+          {% for (kanji, hiragana, romanji), nr_books in bukans %}
           <tr>
-            <td><a href="bukan/{{bukan_title}}">{{ bukan_title }}</a></td>
-            <td>{{nr_matching_pages}}</td>
+            <td><a href="/bukan/{{ romanji }}">{{ kanji }}</a></td>
+            <td>{{ hiragana }}</td>
+            <td>{{ romanji  }}</td>
+            <td>{{ nr_books }}</td>
           </tr>
           {% endfor %}
         </tbody>
