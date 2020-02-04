@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
+  <title>武鑑 Exploring the Bukan Collection</title>
+  <script src="{{ url_for('static', filename='image.js') }}"></script>
+  <script>
+    const canvasWidth = 990;
+    const canvasHeight = 660;
+    const keypoints = {{ keypoints }};
+    window.onload = overlayMain;
+  </script>
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">武鑑 Exploring the Bukan Collection</h1>
+      <p class="subtitle">
+        <a href="/"><ruby>書名<rt>TITLE</rt></ruby></a>
+        <span> / </span>
+        <a href="/bukan/{{ title[2] }}"><ruby>{{ title[0] }}<rt>{{ title[2].upper() }}</rt></ruby></a>
+        <span> / </span>
+        <a href="/bukan/{{ "/".join(indexer) }}">{{ "_".join(indexer[1:]) }}</a>
+      </p>
+    </div>
+  </section>
+  <div class="columns is-vcentered">
+    <div class="column">
+      <a class="is-pulled-right is-link button is-outlined">ᐸ</a>
+    </div>
+    <div class="column">
+      <div class="columns">
+        <div class="column is-one-third" style="border-right: 1px solid lightgrey;">
+          <div class="control">
+            <label class="label">Style</label>
+            <label class="radio">
+              <input type="radio" name="vizStyle" checked>
+              Transparent (<span style="color: grey;">Grey</span>)
+            </label><br>
+            <label class="radio">
+              <input type="radio" name="vizStyle">
+              Colored (<span style="color: blue;">Blue</span>/<span style="color: red;">Red</span>)
+            </label>
+          </div>
+        </div>
+        <div class="field column is-one-third" style="border-right: 1px solid lightgrey;">
+          <label class="label">Intensity</label>
+          <input type="range" min="0" max="4" value="2" class="slider" id="alphaSlider" style="width: 80%;">
+          <div class="columns">
+            <div class="column is-two-fifths">
+              <label class="is-pulled-left" style="color: black;">1<sup>st</sup> Page</label>
+            </div>
+            <div class="column is-two-fifths">
+              <label class="is-pulled-right" style="color: black;">2<sup>nd</sup> Page</label>
+            </div>
+          </div>
+        </div>
+        <div class="field column is-one-third">
+          <label class="label">Options</label>
+          <label class="checkbox">
+            <input type="checkbox" name="featuresCheckbox" id="featuresCheckbox" checked>
+            Draw matching features
+          </label>
+        </div>
+      </div>
+      <canvas id="overlay" width="990" height="660" class="has-background-grey-light"></canvas>
+    </div>
+    <div class="column">
+      <a class="is-pulled-left is-link button is-outlined">ᐳ</a>
+    </div>
+  </div>
+  <img src="/matching/{{ "/".join(indexer) }}" id="sourceimage" hidden>
+  <img src="/image/{{ "/".join(indexer[3:]) }}" id="targetimage" hidden>
+</body>
+
+</html>
