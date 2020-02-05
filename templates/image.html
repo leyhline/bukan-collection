@@ -8,8 +8,8 @@
   <title>武鑑 Exploring the Bukan Collection</title>
   <script src="{{ url_for('static', filename='image.js') }}"></script>
   <script>
-    const canvasWidth = 990;
-    const canvasHeight = 660;
+    const canvasWidth = {{ width }};
+    const canvasHeight = {{ height }};
     const keypoints = {{ keypoints }};
     window.onload = overlayMain;
   </script>
@@ -24,7 +24,7 @@
         <span> / </span>
         <a href="/bukan/{{ title[2] }}"><ruby>{{ title[0] }}<rt>{{ title[2].upper() }}</rt></ruby></a>
         <span> / </span>
-        <a href="/bukan/{{ "/".join(indexer) }}">{{ "_".join(indexer[1:]) }}</a>
+        <a href="/bukan/{{ "/".join(indexer) }}">{{ "{}_{:0>5}_{}.jpg".format(indexer[1], indexer[2], indexer[5]) + "⇆" + "{}_{:0>5}_{}.jpg".format(indexer[3], indexer[4], indexer[5]) }}</a>
       </p>
     </div>
   </section>
@@ -38,11 +38,11 @@
           <div class="control">
             <label class="label">Style</label>
             <label class="radio">
-              <input type="radio" name="vizStyle" checked>
+              <input type="radio" name="vizStyle">
               Transparent (<span style="color: grey;">Grey</span>)
             </label><br>
             <label class="radio">
-              <input type="radio" name="vizStyle">
+              <input type="radio" name="vizStyle" checked>
               Colored (<span style="color: blue;">Blue</span>/<span style="color: red;">Red</span>)
             </label>
           </div>
@@ -55,7 +55,7 @@
               <label class="is-pulled-left" style="color: black;">1<sup>st</sup> Page</label>
             </div>
             <div class="column is-two-fifths">
-              <label class="is-pulled-right" style="color: black;">2<sup>nd</sup> Page</label>
+              <label class="is-pulled-right" style="color: black; text-align: right;">2<sup>nd</sup> Page</label>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@
           </label>
         </div>
       </div>
-      <canvas id="overlay" width="990" height="660" class="has-background-grey-light"></canvas>
+      <canvas id="overlay" width="{{ width }}" height="{{ height }}" class="has-background-grey-light"></canvas>
     </div>
     <div class="column">
       <a class="is-pulled-left is-link button is-outlined">ᐳ</a>

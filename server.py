@@ -10,6 +10,9 @@ assert os.path.exists(bukan_overview_path)
 overview_df = pd.read_parquet(bukan_overview_path)
 bukan_title_df = overview_df.groupby(["Title", "TitleHiragana", "TitleRomanji"]).count()["Release"]
 bukan_data = {}
+image_width = 990
+image_height = 660
+
 
 app = Flask(__name__)
 
@@ -47,7 +50,9 @@ def matches(bukan_title, book1_id, book1_page, book2_id, book2_page, lr):
     dst_points = selection[["dst_x", "dst_y", "dst_size"]].values
     json_dst_points = json.dumps(dst_points.tolist())
     indexer = (bukan_title, book1_id, book1_page, book2_id, book2_page, lr)
-    return render_template("image.html", indexer=indexer, title=title, keypoints=json_dst_points)
+    return render_template("image.html",
+                           indexer=indexer, title=title, keypoints=json_dst_points,
+                           width=image_width if lr == "0" else image_width // 2, height=image_height)
 
 
 @app.route("/image/<book_id>/<page>/<lr>")
