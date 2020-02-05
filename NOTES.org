@@ -2,7 +2,7 @@
 #+BIBLIOGRAPHY: references plain
 This is kind of backwards...
 
-* Work Log [9/19]
+* Work Log [12/19]
 ** DONE CW45/2019 [3/3]
    CLOSED: [2019-11-11 Mo 12:34] DEADLINE: <2019-11-09 Sa> SCHEDULED: <2019-11-04 Mo>
 
@@ -198,20 +198,24 @@ This is kind of backwards...
 *** DONE Run on full dataset
     CLOSED: [2020-01-21 Tue 11:55]
 
-** TODO CW04/2020 [0/4]
+** DONE CW04/2020 [4/4]
    DEADLINE: <2020-01-25 Sat> SCHEDULED: <2020-01-20 Mon>
 
-*** TODO Major Bukan Version recognition possible?
-*** TODO Visualizing changes
-*** TODO Meeting with Prof
+*** DONE Major Bukan Version recognition possible?
+*** DONE Visualizing changes
+*** DONE Meeting with Prof
     SCHEDULED: <2020-01-23 Thu 15:00>
 
-*** TODO Writing report
-** TODO CW05/2020 [0/0]
+*** DONE Writing report
+** DONE CW05/2020 [1/1]
    DEADLINE: <2020-02-01 Sat> SCHEDULED: <2020-01-27 Mon>
+*** DONE Implemented webapp prototype
 
-** TODO CW06/2020 [0/0]
+** TODO CW06/2020 [2/3]
    DEADLINE: <2020-02-08 Sat> SCHEDULED: <2020-02-03 Mon>
+*** DONE Recalculated features with split up pages
+*** DONE Finalized webapp
+*** TODO Meeting at Institute for Japanese Literature
 
 ** TODO CW07/2020 [0/0]
    DEADLINE: <2020-02-15 Sat> SCHEDULED: <2020-02-10 Mon>
