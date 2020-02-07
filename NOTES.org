@@ -209,13 +209,15 @@ This is kind of backwards...
 *** DONE Writing report
 ** DONE CW05/2020 [1/1]
    DEADLINE: <2020-02-01 Sat> SCHEDULED: <2020-01-27 Mon>
-*** DONE Implemented webapp prototype
 
-** TODO CW06/2020 [2/3]
-   DEADLINE: <2020-02-08 Sat> SCHEDULED: <2020-02-03 Mon>
+*** DONE Implemented webapp prototype
+** DONE CW06/2020 [3/3]
+   CLOSED: [2020-02-07 Fri 10:16] DEADLINE: <2020-02-08 Sat> SCHEDULED: <2020-02-03 Mon>
+
 *** DONE Recalculated features with split up pages
 *** DONE Finalized webapp
-*** TODO Meeting at Institute for Japanese Literature
+*** DONE Meeting at Institute for Japanese Literature
+    CLOSED: [2020-02-07 Fri 10:16]
 
 ** TODO CW07/2020 [0/0]
    DEADLINE: <2020-02-15 Sat> SCHEDULED: <2020-02-10 Mon>
