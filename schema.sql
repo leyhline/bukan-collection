@@ -20,7 +20,8 @@ CREATE TABLE book (
     aspect VARCHAR(20) NOT NULL,
     nr_scans INT UNSIGNED NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (title_id) REFERENCES title (id)
+    FOREIGN KEY (title_id) REFERENCES title (id),
+    INDEX ititle_id (title_id)
 );
 
 CREATE TABLE page (
@@ -124,5 +125,7 @@ CREATE TABLE fmatch (
     PRIMARY KEY (id),
     UNIQUE (src_page_id, src_feature, dst_page_id, dst_feature),
     FOREIGN KEY (src_page_id, src_feature) REFERENCES keypoint (page_id, feature),
-    FOREIGN KEY (dst_page_id, dst_feature) REFERENCES keypoint (page_id, feature)
+    FOREIGN KEY (dst_page_id, dst_feature) REFERENCES keypoint (page_id, feature),
+    INDEX isrc_page_id (src_page_id),
+    INDEX idst_page_id (dst_page_id)
 );
