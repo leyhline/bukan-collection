@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="{{ url_for('static', filename='bulma.css') }}">
   <title>武鑑 Exploring the Bukan Collection</title>
-  <script src="{{ url_for('static', filename='image.js') }}"></script>
+  <script src="{{ url_for('static', filename='imageogl.js') }}"></script>
   <script>
     const canvasWidth = {{ width }};
     const canvasHeight = {{ height }};
@@ -33,40 +33,6 @@
       <a class="is-pulled-right is-link button is-outlined">ᐸ</a>
     </div>
     <div class="column">
-      <div class="columns">
-        <div class="column is-one-third" style="border-right: 1px solid lightgrey;">
-          <div class="control">
-            <label class="label">Style</label>
-            <label class="radio">
-              <input type="radio" name="vizStyle">
-              Transparent (<span style="color: grey;">Grey</span>)
-            </label><br>
-            <label class="radio">
-              <input type="radio" name="vizStyle" checked>
-              Colored (<span style="color: blue;">Blue</span>/<span style="color: red;">Red</span>)
-            </label>
-          </div>
-        </div>
-        <div class="field column is-one-third" style="border-right: 1px solid lightgrey;">
-          <label class="label">Intensity</label>
-          <input type="range" min="0" max="4" value="2" class="slider" id="alphaSlider" style="width: 80%;">
-          <div class="columns">
-            <div class="column is-two-fifths">
-              <label class="is-pulled-left" style="color: black;">1<sup>st</sup> Page</label>
-            </div>
-            <div class="column is-two-fifths">
-              <label class="is-pulled-right" style="color: black; text-align: right;">2<sup>nd</sup> Page</label>
-            </div>
-          </div>
-        </div>
-        <div class="field column is-one-third">
-          <label class="label">Options</label>
-          <label class="checkbox">
-            <input type="checkbox" name="featuresCheckbox" id="featuresCheckbox" checked>
-            Draw matching features
-          </label>
-        </div>
-      </div>
       <canvas id="overlay" width="{{ width }}" height="{{ height }}" class="has-background-grey-light"></canvas>
     </div>
     <div class="column">
