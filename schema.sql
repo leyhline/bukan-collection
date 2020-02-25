@@ -124,7 +124,5 @@ CREATE TABLE fmatch (
     PRIMARY KEY (id),
     UNIQUE (src_page_id, src_feature, dst_page_id, dst_feature),
     FOREIGN KEY (src_page_id, src_feature) REFERENCES keypoint (page_id, feature),
-    FOREIGN KEY (src_page_id, src_feature) REFERENCES descriptor (page_id, feature),
-    FOREIGN KEY (dst_page_id, dst_feature) REFERENCES keypoint (page_id, feature),
-    FOREIGN KEY (dst_page_id, dst_feature) REFERENCES descriptor (page_id, feature)
+    FOREIGN KEY (dst_page_id, dst_feature) REFERENCES keypoint (page_id, feature)
 );
