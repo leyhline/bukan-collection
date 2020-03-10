@@ -229,16 +229,16 @@ This is kind of backwards...
 ** DONE CW08/2020 [0/0]
    DEADLINE: <2020-02-22 Sat> SCHEDULED: <2020-02-17 Mon>
 
-** TODO CW09/2020 [0/0]
+** DONE CW09/2020 [0/0]
    DEADLINE: <2020-02-29 Sat> SCHEDULED: <2020-02-24 Mon>
 
-** TODO CW10/2020 [0/0]
+** DONE CW10/2020 [0/0]
    DEADLINE: <2020-03-07 Sat> SCHEDULED: <2020-03-02 Mon>
 
-** TODO CW11/2020 [0/0]
+** DONE CW11/2020 [0/0]
    DEADLINE: <2020-03-14 Sat> SCHEDULED: <2020-03-09 Mon>
 
-** TODO CW12/2020 [0/0]
+** DONE CW12/2020 [0/0]
    SCHEDULED: <2020-03-16 Mon>
 
 * Overview
@@ -319,9 +319,3 @@ Since this worked out better than expected, let's see how one might use this for
    CLOSED: [2020-01-15 水 15:10]
 
    Aligning/Registering the images and doing pixelwise comparison
-
-=======
-#+TITLE: Identifying Woodblocks from printed Bukan Books
-#+BIBLIOGRAPHY: references plain
-This is kind of backwards...
-
