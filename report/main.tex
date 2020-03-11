@@ -1,6 +1,6 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+% !TEX program=lualatex
+
+\documentclass{ltjarticle}
 
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{references.bib}
@@ -15,13 +15,15 @@
 
 \section{Introduction}
 
-The \emph{Center for Open Data in the Humanities} (CODH) is a joint research institution in Tokyo, Japan. Its goal is the promotion of data-driven research in the humanities.\cite{kitamoto2017codh} For this purpose they were releasing a number of data sets, all of them related to Japanese history and arts. This work started out by specifically looking at the \emph{Bukan Collection}\cite{}, around 300 books with information about government officials during 1700 to 1900. So, how can we assist humanities researchers with techniques from Computer Science?
+The \emph{Center for Open Data in the Humanities} (CODH) is a joint research institution in Tokyo, Japan. Its goal is the promotion of data-driven research in the humanities.\cite{kitamoto2017codh} For this purpose they were releasing a number of data sets, all of them related to Japanese history and arts. This work started out by specifically looking at the \emph{Bukan Collection}\cite{codh2018bukan}, around 300 books with information about government officials during 1700 to 1900. So, how can we assist humanities researchers with techniques from Computer Science?
 
-By applying well-known algorithms from Computer Vision on the books' pages, without using information about the written content, we were able to develop a reliable system for spotting and visualizing similarities. This might be a first step into building a timeline of a book's prints, thus exposing some events hidden in there.
+By applying well-known algorithms from Computer Vision on the books' pages, without using information about the written content, we were able to develop a reliable system for spotting and visualizing similarities. This might be a first step into building a timeline of a book's prints, thus exposing some historical events hidden in there.
 
 But more importantly, this is an example of how even conservative algorithms can give compelling results by using a few reasonable assumptions on the corresponding data. Even basic computer-aided quantitative analysis might reveal information that is near invisible of a human researcher.
 
 \subsection{The Bukan Collection}
+
+This work was mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic japanese books from Edo period (1603-1868). They are about listing people of influence, i.e. persons, families and institutions with governmental responsibilities.
 
 \section{Method}
 
