@@ -1,6 +1,9 @@
 \documentclass{ltjarticle}
 
 \usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{xcolor}
 
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{references.bib}
@@ -19,7 +22,9 @@ The \emph{Center for Open Data in the Humanities} (CODH) is a joint research ins
 
 By applying well-known algorithms from Computer Vision on the books' pages, without using information about the written content, we were able to develop a reliable system for spotting and visualizing similarities. This might be a first step into building a timeline of a book's prints, thus exposing some historical events hidden in there.
 
-But more importantly, this is an example of how even conservative algorithms can give compelling results by using a few reasonable assumptions on the corresponding data. Even basic computer-aided quantitative analysis might reveal information that is near invisible of a human researcher.
+But more importantly, this is an example of how even conservative algorithms can give compelling results by using a few reasonable assumptions on the corresponding data. Even basic computer-aided quantitative analysis might reveal information that is near invisible to a human researcher.
+
+The full source code of this work can be found at: \url{https://github.com/leyhline/bukan-collection/}
 
 \subsection{The Bukan Collection}
 
@@ -54,9 +59,55 @@ At the end there will be a database populated with the necessary data for easily
 
 \subsection{Keypoint Matching}
 
+As a first step, it is necessary to compare a large number of images. This must be computationally viable and invariable to a number of transformations. The original images---as they were stored by the digital camera---have a width of $5616$ and height of $3744$ pixels. Thus, each image has around 21 million pixels with three color chanels each.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{landscape_average.jpg}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{portrait_average.jpg}
+        \caption{}
+    \end{subfigure}
+    \caption{The mean over all greyscaled images grouped by book layout: (a) shows the mean of scans with wide, single pages while (b) shows images with two pages per scan. The \textcolor{blue}{blue rectangle} shows the cropping window and the \textcolor{olive}{green line} represents the horizontal center of the scan. It seems to correspond with the binding, therefore averagely separating left from right page.}
+    \label{fig:average}
+\end{figure}
+
+Under the assumption, that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, basic image transformations are applied. All scans are resized by $25\%$, converted to greyscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center. See figure \ref{fig:average}.
+
+Now, each image has still around $650,000$ pixels. Moreover, at least some \emph{translational invariance} is required since the images are not always perfectly aligned to each other. It is also necessary to consider that letters and symbols vary in thickness, depending on the amount of ink used during printing. This is where \emph{Keypoint Detection} comes in. The general idea is to find points of interest in an image that are most noticable and give an unique description of the local area surrounding them.This description is mostly abstract, hence invariant to many kinds of transformations.
+
+Computer Vision research yielded various kinds of keypoints, most prominently \emph{SIFT}.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the \emph{Shūchin Bukan} (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages. However, most of the time an identical page number corresponds to matching page content (e.g. page 10 of two prints was made using the same woodblock). To remove this bias, a potential matching of all possible page-keypoint combinations was computed while discarding matching pages where the number of matching keypoints was below a given threshold. The final metric was the intersection of the precision and the recall curve. The following algorithms were evaluated:
+
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item ORB\cite{rublee2011orb}
+    \item AKAZE\cite{alcantarilla2011fast}
+    \item AKAZE without rotational invariance (UPRIGHT)
+    \item BRISK\cite{leutenegger2011brisk}
+    \item SIFT and SURF\cite{bay2006surf}, but these are not further considered since they are lacking performance on this task
+\end{itemize}
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=\textwidth]{keypoint-evaluation.png}
+    \caption{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the grey horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
+    \label{fig:keypoint-evaluation}
+\end{figure}
+
+The results are presented in figure \ref{fig:keypoint-evaluation}. AKAZE UPRIGHT seems to have the best performance. Here, rotational invariance was explicitly \emph{not} included since the original images were scanned after cleanly aligning them on a table. This seems to bolster the keypoints' discriminative power. Nevertheless, the current results are far from satisfactory; from a performance standpoint as well as from the stability of the approach. Can we improve upon this by incorporating additional information?
+
 \subsection{Projective Transformation}
 
+
+
 \subsection{Relational Databases}
+
+\section{Conclusion}
+
+\section{Further Improvements}
 
 \printbibliography
 
