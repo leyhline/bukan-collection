@@ -67,11 +67,11 @@ As a first step, it is necessary to compare a large number of images. This must 
 \begin{figure}
     \centering
     \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=\textwidth]{landscape_average.jpg}
+        \includegraphics[width=\textwidth]{landscape-average.jpg}
         \caption{}
     \end{subfigure}
     \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=\textwidth]{portrait_average.jpg}
+        \includegraphics[width=\textwidth]{portrait-average.jpg}
         \caption{}
     \end{subfigure}
     \caption{The mean over all greyscaled images grouped by book layout: (a) shows the mean of scans with wide, single pages while (b) shows images with two pages per scan. The \textcolor{blue}{blue rectangle} shows the cropping window and the \textcolor{olive}{green line} represents the horizontal center of the scan. It seems to correspond with the binding, therefore averagely separating left from right page.}
@@ -95,7 +95,7 @@ Computer Vision research yielded various kinds of keypoints, most prominently \e
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{keypoint-evaluation.png}
+    \includegraphics[width=\textwidth]{keypoint-evaluation.pdf}
     \caption{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the grey horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
     \label{fig:keypoint-evaluation}
 \end{figure}
