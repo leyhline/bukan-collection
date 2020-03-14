@@ -4,6 +4,8 @@
 \usepackage{hyperref}
 \usepackage{subcaption}
 \usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{bm}
 
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{references.bib}
@@ -30,7 +32,7 @@ The full source code of this work can be found at: \url{https://github.com/leyhl
 
 This work was mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from Edo period (1603-1868). They are about listing people of influence, i.e. persons, families and institutions with governmental responsibilities. Alongside names, there are also various symbols like family crests and procession items as well as family trees. The books are written in pre-modern Japanese (\emph{Kuzushiji}), therefore they can not easily be read without special training. See figure~\ref{fig:shuugyokubukan006} for an example.
 
-\begin{figure}[]
+\begin{figure}
     \centering
     \includegraphics[width=\textwidth]{200019500_00006.jpg}
     \caption[Shūgyoku Bukan (袖玉武鑑), page 6]{Shūgyoku Bukan (袖玉武鑑) from 1861, page 6; showing names, descriptions, family crests and procession items. Especially interesting are the blank areas on the right. These might be filled in later prints.}
@@ -58,6 +60,7 @@ For tackling this task, three common techniques are used:
 At the end there will be a database populated with the necessary data for easily browsing books, finding similar pages and quickly displaying visualizations. For all these steps free and open tools are available. Especially for the Computer Vision parts the mature \emph{OpenCV} software library was used.\cite{opencv_library}
 
 \subsection{Keypoint Matching}
+\label{sec:keypoint-matching}
 
 As a first step, it is necessary to compare a large number of images. This must be computationally viable and invariable to a number of transformations. The original images---as they were stored by the digital camera---have a width of $5616$ and height of $3744$ pixels. Thus, each image has around 21 million pixels with three color chanels each.
 
@@ -77,7 +80,7 @@ As a first step, it is necessary to compare a large number of images. This must 
 
 Under the assumption, that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, basic image transformations are applied. All scans are resized by $25\%$, converted to greyscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center. See figure \ref{fig:average}.
 
-Now, each image has still around $650,000$ pixels. Moreover, at least some \emph{translational invariance} is required since the images are not always perfectly aligned to each other. It is also necessary to consider that letters and symbols vary in thickness, depending on the amount of ink used during printing. This is where \emph{Keypoint Detection} comes in. The general idea is to find points of interest in an image that are most noticable and give an unique description of the local area surrounding them.This description is mostly abstract, hence invariant to many kinds of transformations.
+Now, each image has still around $650,000$ pixels. Moreover, at least some \emph{translational invariance} is required since the images are not always perfectly aligned to each other. It is also necessary to consider that letters and symbols vary in thickness, depending on the amount of ink used during printing. This is where \emph{Keypoint Detection} comes in. The general idea is to find points of interest in an image that are most noticable and give an unique description of the local area surrounding them.This description is mostly abstract, hence invariant to many kinds of transformations. For details, see \cite[Ch.4]{szeliski2010computer}
 
 Computer Vision research yielded various kinds of keypoints, most prominently \emph{SIFT}.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the \emph{Shūchin Bukan} (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages. However, most of the time an identical page number corresponds to matching page content (e.g. page 10 of two prints was made using the same woodblock). To remove this bias, a potential matching of all possible page-keypoint combinations was computed while discarding matching pages where the number of matching keypoints was below a given threshold. The final metric was the intersection of the precision and the recall curve. The following algorithms were evaluated:
 
@@ -90,7 +93,7 @@ Computer Vision research yielded various kinds of keypoints, most prominently \e
     \item SIFT and SURF\cite{bay2006surf}, but these are not further considered since they are lacking performance on this task
 \end{itemize}
 
-\begin{figure}[]
+\begin{figure}
     \centering
     \includegraphics[width=\textwidth]{keypoint-evaluation.png}
     \caption{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the grey horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
@@ -101,7 +104,25 @@ The results are presented in figure \ref{fig:keypoint-evaluation}. AKAZE UPRIGHT
 
 \subsection{Projective Transformation}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{pipeline.pdf}
+    \caption{Starting out from Keypoint Matching described in section~\ref{sec:keypoint-matching} a pipeline was built, reducing the number of false positives by incorporating additional information and storing the results for further usage in a relational database (SQL).}
+    \label{fig:pipeline}
+\end{figure}
 
+There is, of course, more information that can be used for improving the performance. As a first step, filtering matching keypoints by their quality and position is useful. Here, matches with a distance\footnote{AKAZE keypoints yield binary descriptors. Two such descriptors can be compared calculating the \emph{Hamming Distance}, where a larger distance implies a larger perceptible difference.} over 100 are removed. The same goes for matches, where the keypoint pair is more than 100 pixels apart from each other. With this, larger translations are not allowed since we assume clean alignment during the scanning proces. But by far the largest improvements in performance are gained by attempting a Perspective Transformation between two images.
+
+A Perspective Transformation (or \emph{Homography}) is a matrix $\bm{H}$ for transforming homogeneous coordinates $\bm{H}\vec{x} = \vec{y}$. This allows for not only linear transformations like translation and rotation but also for perspective transformations. Details can be found in most books on Computer Graphics like \cite{marschner2015fundamentals} since these calculations are elementary to modern 3D applications. For finding such a transformation from matching keypoints---even though it is not sure if these matches are always correct---the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is used.\cite{fischler1981random} Its basic idea is that a random subset of matching keypoint pairs is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{ransac-performance.png}
+    \caption{Precision and recall, by threshold on the number of keypoints. This is but a small part from the whole curve, just showing values above $0.95$. The recall is always on an excellent level while the threshold should not be too low because precision will collapse otherwise.}
+    \label{fig:ransac}
+\end{figure}
+
+Using RANSAC yields outstanding results. Precision and recall are close to their maximum of $1.0$, depending on the threshold set for the number of keypoints. Moreover, the performance is much more robust concerning this threshold. See figure~\ref{fig:ransac} where even for larger thresholds the recall is always above $0.95$. These results come at a cost: a computational one. Calculating RANSAC is much more expensive in this regard than just matching keypoints. Of course, first filtering the keypoints before running RANSAC is an option, but too aggressive filtering will go at the expense of robustness.
 
 \subsection{Relational Databases}
 
