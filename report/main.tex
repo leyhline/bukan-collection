@@ -188,6 +188,15 @@ Hence, for 370 books, the total number of keypoints is approximately $n = 370 \c
 
 Even using the abundant computational power that is available nowadays, calculating 400 trillion matches for just a few hundred books is infeasible, not to mention storing them. It might be possible to speed this up algorithmically, using suitable data structures. Instead, a simpler approach was chosen.
 
+By making two assumption about the data---the Bukan Collection---it is easy to drastically reduce the number of matching operations. First, matching pages are only expected between prints of the same book title.\footnote{There are 44 distinct book titles in the bukan collection, each with a different number of prints, ranging from 100 prints for the Shūgyoku Bukan (袖玉武鑑) down to only a single print for 14 titles.} Second, the offset between pages should not be more than 8 pages in both directions; for example page~10 of one book is not compared to all the pages of the other book anymore. Instead, this page~10 is only matched with pages~2-18 (in total 17) of the other book. For two books with 250 pages this would result in much less page comparisons:
+
+\begin{align*}
+    250^2 &= 62,500 & \text{naive matching} \\
+    250 \cdot 17 &= 4,250 & \text{matching after fixing page offset} \\
+    \frac{62,500}{4,250} &\approx 14.7 & \text{speedup factor}
+\end{align*}
+
+Moreover, the number of matches now increases linearly instead of quadratic, leading to an even larger “speedup factor” for larger books.
 
 \section{Conclusion}
 
