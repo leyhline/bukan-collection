@@ -39,7 +39,7 @@ The full source code of this work can be found at: \url{https://github.com/leyhl
 
 \section{The Bukan Collection}
 
-This work was mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from Edo period (1603-1868). They are about listing people of influence, i.e. persons, families and institutions with governmental responsibilities. Alongside names, there are also various symbols like family crests and procession items as well as family trees. The books are written in pre-modern Japanese (\emph{Kuzushiji}), therefore they can not easily be read without special training. See figure~\ref{fig:shuugyokubukan006} for an example.
+This work was mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from Edo period (1603-1868). They are about listing people of influence, i.e. persons, families and institutions with governmental responsibilities. Alongside names, there are also various symbols like family crests and procession items as well as family trees. The books are written in pre-modern Japanese (\emph{Kuzushiji}), therefore they can not easily be read without special training.\cite{hakim2019} See figure~\ref{fig:shuugyokubukan006} for an example.
 
 \begin{figure}
     \centering
@@ -112,6 +112,7 @@ Computer Vision research yielded various kinds of keypoints, most prominently \e
 The results are presented in figure \ref{fig:keypoint-evaluation}. AKAZE UPRIGHT seems to have the best performance. Here, rotational invariance was explicitly \emph{not} included since the original images were scanned after cleanly aligning them on a table. This seems to bolster the keypoints' discriminative power. Nevertheless, the current results are far from satisfactory; from a performance standpoint as well as from the stability of the approach. Can we improve upon this by incorporating additional information?
 
 \subsection{Projective Transformations}
+\label{sec:projective-transformations}
 
 \begin{figure}
     \centering
@@ -161,6 +162,7 @@ A last source of failure that can easily be eliminated are extreme perspective t
 The threshold of $0.001$ is quite conservative and might even be chosen one magnitude lower without much difference.
 
 \subsection{Relational Databases}
+\label{sec:relational-databases}
 
 There are numerous possibilities for storing the results from the aforementioned calculations (keypoints, matches, transformations). Here, it seems most sensible to use relational databases, a mature concept based on Codd's \emph{relational model} from 1970.\cite{codd1970relational} This allows for easy preservation of the relationships between the data points as well as easy retrieval.
 
@@ -188,7 +190,7 @@ Hence, for 370 books, the total number of keypoints is approximately $n = 370 \c
 
 Even using the abundant computational power that is available nowadays, calculating 400 trillion matches for just a few hundred books is infeasible, not to mention storing them. It might be possible to speed this up algorithmically, using suitable data structures. Instead, a simpler approach was chosen.
 
-By making two assumption about the data---the Bukan Collection---it is easy to drastically reduce the number of matching operations. First, matching pages are only expected between prints of the same book title.\footnote{There are 44 distinct book titles in the bukan collection, each with a different number of prints, ranging from 100 prints for the Shūgyoku Bukan (袖玉武鑑) down to only a single print for 14 titles.} Second, the offset between pages should not be more than 8 pages in both directions; for example page~10 of one book is not compared to all the pages of the other book anymore. Instead, this page~10 is only matched with pages~2-18 (in total 17) of the other book. For two books with 250 pages this would result in much less page comparisons:
+By making two assumption about the data---the Bukan Collection---it is easy to drastically reduce the number of matching operations. First, matching pages are only expected between prints of the same book title.\footnote{There are 44 distinct book titles in the bukan collection, each with a different number of prints, ranging from 100 prints for the Shūgyoku Bukan (袖玉武鑑) down to only a single print for 14 titles.} Second, the offset between pages should not be more than 8 pages in both directions; for example page~10 of one book will not compared to all the pages of the other book anymore. Instead, this page~10 is only matched with pages~2-18 (in total 17) of the other book. For two books with 250 pages this would result in much less page comparisons:
 
 \begin{align*}
     250^2 &= 62,500 & \text{naive matching} \\
@@ -196,11 +198,32 @@ By making two assumption about the data---the Bukan Collection---it is easy to d
     \frac{62,500}{4,250} &\approx 14.7 & \text{speedup factor}
 \end{align*}
 
-Moreover, the number of matches now increases linearly instead of quadratic, leading to an even larger “speedup factor” for larger books.
+Moreover, the number of matches now increases linearly instead of quadratic, leading to an even larger “speedup factor” for books with more pages.
 
 \section{Conclusion}
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{page-compare.jpg}
+    \caption[Visualizing page differences]{Visualizing page differences between two prints of the Shūchin Bukan (袖珍武鑑); page~13 from 1840 and page~15 from 1837. Differences are indicated by \textcolor{blue}{blueish} and \textcolor{red}{reddish} coloring respectively.}
+    \label{fig:page-compare}
+\end{figure}
+
+At the end of this work, there is a database holding information about matching keypoints and page transformations. For each matching page pair found, it is now possible to align them and applying simple, pixelwise operations for visualizing the differences. For an example see figure~\ref{fig:page-compare}.
+
+A scholar in the humanities and literature can now interactively browse these books and quickly identify interesting parts. This will hopefully lessen her burden when examining a large number of pages, since small, abstract differences are often hard to discern for the human eye. So instead of exhausting her cognitive ability by just staring at pages, it will now be easier to extract information from the actual content.
+
 \section{Further Improvements}
+
+Naturally, multiple improvements are possible---most prominently runtime optimizations---that open up at every stage of the pipeline. Hereafter is a non-conclusive list of starting points:
+
+During keypoint matching (section~\ref{sec:keypoint-matching}) better strategies for removing problematic keypoints and matches are possible.
+
+RANSAC (section~\ref{sec:projective-transformations}) has multiple parameters that can be tuned. Furthermore, there even might be better, non-iterative methods for finding correct keypoint pairs for the problem and data at hand.
+
+As already mentioned in section~\ref{sec:relational-databases}, there might be useful data structures for speeding up the search for matching keypoints (i.e. computing the \emph{hamming distance}). Furthermore, the assumptions made on the data might need further refinement. Especially grouping prints by title might lead to interesting page pairs going undetected. Grouping by year published might deserve investigation.
+
+A most interesting improvement would be a method for reliably flattening out pages before running the pipeline. Since the historic books presented here were digitized with much care, most pages are curved near their binding. Otherwise, books would have been damaged during the scanning process. Having images of completely flat pages would certainly improve keypoint matching as well as visualization. Some effort was made in this direction, but nothing proved stable enough, thus hurting the overall performance.
 
 \printbibliography
 
