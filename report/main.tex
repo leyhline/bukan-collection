@@ -10,19 +10,22 @@
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{references.bib}
 
-\title{Detection of Differences between Printed Pages and its Application on Bukan}
-\author{Thomas Leyh}
+\renewcommand*\contentsname{Table of Contents}
+\renewcommand{\figurename}{Figure}
+
+\title{\large National Institute of Informatics, Tokyo \\ Internship Report \\ \LARGE Detection of Differences between Printed Pages and its Application on Bukan}
+\author{Thomas Leyh \\ University of Freiburg, Germany}
 \date{March 20th, 2020}
 
 \begin{document}
 
-\maketitle
+\clearpage\maketitle
+\thispagestyle{empty}
 
 \tableofcontents
 
-\listoffigures
-
 \pagebreak
+\setcounter{page}{1}
 
 \section{Introduction}
 
@@ -159,7 +162,7 @@ The threshold of $0.001$ is quite conservative and might even be chosen one magn
 
 \subsection{Relational Databases}
 
-There are numerous possibilities for storing the results from the aforementioned calculations: keypoints, matches, transformations... Here, it seems most sensible to use relational databases, a mature concept based on Codd's \emph{relational model} from 1970.\cite{codd1970relational} This allows for easy preservation of the relations between the data points as well as easy retrieval.
+There are numerous possibilities for storing the results from the aforementioned calculations (keypoints, matches, transformations). Here, it seems most sensible to use relational databases, a mature concept based on Codd's \emph{relational model} from 1970.\cite{codd1970relational} This allows for easy preservation of the relationships between the data points as well as easy retrieval.
 
 \begin{figure}
     \centering
@@ -168,7 +171,23 @@ There are numerous possibilities for storing the results from the aforementioned
     \label{fig:er-schema}
 \end{figure}
 
-The entity-relationship diagram in figure~\ref{fig:er-schema} can give a rough overview of the general structure of the database. There are numerous software implementations available and most frontend frameworks offer bindings, thus allowing for easily building visualizations.
+The entity-relationship diagram in figure~\ref{fig:er-schema} can give a rough overview of the general structure of the database. There are numerous software implementations available and most frontend frameworks offer bindings, thus allowing for easily building visualizations. When inspecting these relation in detail, another problem occurs; again of computational nature. Reading the diagram from left to right:
+
+\begin{itemize}
+    \setlength\itemsep{0em}
+    \item Each print has around 250 pages on average,
+    \item each page has around 300 keypoints on average,
+    \item and naive matching requires to look at every possible keypoint pair combination.
+\end{itemize}
+
+Hence, for 370 books, the total number of keypoints is approximately $n = 370 \cdot 250 \cdot 300 = 27,750,000$. The number of combinations is given by:
+
+\begin{equation*}
+    \binom{n}{2} = \frac{n!}{2!(n-2)!} \approx 3.85 \times 10^{14}
+\end{equation*}
+
+Even using the abundant computational power that is available nowadays, calculating 400 trillion matches for just a few hundred books is infeasible, not to mention storing them. It might be possible to speed this up algorithmically, using suitable data structures. Instead, a simpler approach was chosen.
+
 
 \section{Conclusion}
 
