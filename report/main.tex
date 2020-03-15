@@ -4,8 +4,8 @@
 \usepackage{hyperref}
 \usepackage{subcaption}
 \usepackage{xcolor}
+\usepackage{amssymb}
 \usepackage{amsmath}
-\usepackage{bm}
 
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{references.bib}
@@ -113,7 +113,7 @@ The results are presented in figure \ref{fig:keypoint-evaluation}. AKAZE UPRIGHT
 
 There is, of course, more information that can be used for improving the performance. As a first step, filtering matching keypoints by their quality and position is useful. Here, matches with a distance\footnote{AKAZE keypoints yield binary descriptors. Two such descriptors can be compared calculating the \emph{Hamming Distance}, where a larger distance implies a larger perceptible difference.} over 100 are removed. The same goes for matches, where the keypoint pair is more than 100 pixels apart from each other. With this, larger translations are not allowed since we assume clean alignment during the scanning proces. But by far the largest improvements in performance are gained by attempting a Perspective Transformation between two images.
 
-A Perspective Transformation (or \emph{Homography}) is a matrix $\bm{H}$ for transforming homogeneous coordinates $\bm{H}\vec{x} = \vec{y}$. This allows for not only linear transformations like translation and rotation but also for perspective transformations. Details can be found in most books on Computer Graphics like \cite{marschner2015fundamentals} since these calculations are elementary to modern 3D applications. For finding such a transformation from matching keypoints---even though it is not sure if these matches are always correct---the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is used.\cite{fischler1981random} Its basic idea is that a random subset of matching keypoint pairs is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked. 
+A Perspective Transformation (or \emph{Homography}) is a matrix $\mathbf{H}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$. This allows for not only linear transformations like translation and rotation but also for perspective transformations. Here, since it is about flat images, the matrix is three-dimensional: $\mathbf{H} \in \mathbb{R}^{3 \times 3}$. Details can be found in most books on Computer Graphics like \cite{marschner2015fundamentals} since these calculations are elementary to modern 3D applications. For finding such a transformation from matching keypoints---even though it is not sure if these matches are always correct---the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is used.\cite{fischler1981random} Its basic idea is that a random subset of matching keypoint pairs is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked. 
 
 \begin{figure}
     \centering
@@ -122,9 +122,38 @@ A Perspective Transformation (or \emph{Homography}) is a matrix $\bm{H}$ for tra
     \label{fig:ransac}
 \end{figure}
 
-Using RANSAC yields outstanding results. Precision and recall are close to their maximum of $1.0$, depending on the threshold set for the number of keypoints. Moreover, the performance is much more robust concerning this threshold. See figure~\ref{fig:ransac} where even for larger thresholds the recall is always above $0.95$. These results come at a cost: a computational one. Calculating RANSAC is much more expensive in this regard than just matching keypoints. Of course, first filtering the keypoints before running RANSAC is an option, but too aggressive filtering will go at the expense of robustness.
+Using RANSAC leads to outstanding results. Values for precision and recall---depending on the threshold set for the number of keypoints---are close to their maximum of $1.0$. Moreover, the performance is much more robust concerning this threshold. See figure~\ref{fig:ransac} where even for larger thresholds the recall is always above $0.95$. These results come at a cost: a computational one. Calculating RANSAC is much more expensive in this regard than just matching keypoints. Of course, first filtering the keypoints before running RANSAC is an option for speeding up the computation, but too aggressive filtering will go at the expense of robustness. After some experiments, a maximum distiance between keypoints of $100$ was chosen.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{homography-good.jpg}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{homography-bad.png}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \includegraphics[width=\textwidth]{homography-cause.jpg}
+        \caption{}
+    \end{subfigure}
+    \caption{Two examples for perspective transformations: In this case, a good transformation as in (a) will have no perceptible effect, just slightly shifting some pixels. The image in (b) is the result of a bad transformation, shifting perspective in a way the original image can not be recognized anymore. This is caused by incorrect keypoint matching as seen in (c) where the majority of keypoints on the left page is matched to a single point on the right page.}
+    \label{fig:homography-compare}
+\end{figure}
+
+A last source of failure that can easily be eliminated are extreme perspective transformations as seen in figure~\ref{fig:homography-compare}. Caused by incorrect keypoint matching, RANSAC mistakenly results in extreme perspective shifts that nevertheless are deemed possible by the algorithm. This makes up for less than $1\%$ of false positives, but can be corrected by removing matches where the projective elements from $\mathbf{H}$ are too extreme. Accordingly, transformations must conform to these two inequalities:
+
+\begin{gather*}
+    |\mathbf{H}_{1,3}| \leq 0.001\\
+    |\mathbf{H}_{2,3}| \leq 0.001
+\end{gather*}
+
+The threshold of $0.001$ is quite conservative and might even be chosen one magnitude lower without much difference.
 
 \subsection{Relational Databases}
+
+
 
 \section{Conclusion}
 
