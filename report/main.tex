@@ -10,13 +10,19 @@
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{references.bib}
 
-\title{Identifying Woodblocks from the Bukan Collection}
+\title{Detection of Differences between Printed Pages and its Application on Bukan}
 \author{Thomas Leyh}
 \date{March 20th, 2020}
 
 \begin{document}
 
 \maketitle
+
+\tableofcontents
+
+\listoffigures
+
+\pagebreak
 
 \section{Introduction}
 
@@ -28,7 +34,7 @@ But more importantly, this is an example of how even conservative algorithms can
 
 The full source code of this work can be found at: \url{https://github.com/leyhline/bukan-collection/}
 
-\subsection{The Bukan Collection}
+\section{The Bukan Collection}
 
 This work was mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from Edo period (1603-1868). They are about listing people of influence, i.e. persons, families and institutions with governmental responsibilities. Alongside names, there are also various symbols like family crests and procession items as well as family trees. The books are written in pre-modern Japanese (\emph{Kuzushiji}), therefore they can not easily be read without special training. See figure~\ref{fig:shuugyokubukan006} for an example.
 
@@ -74,7 +80,7 @@ As a first step, it is necessary to compare a large number of images. This must 
         \includegraphics[width=\textwidth]{portrait-average.jpg}
         \caption{}
     \end{subfigure}
-    \caption{The mean over all greyscaled images grouped by book layout: (a) shows the mean of scans with wide, single pages while (b) shows images with two pages per scan. The \textcolor{blue}{blue rectangle} shows the cropping window and the \textcolor{olive}{green line} represents the horizontal center of the scan. It seems to correspond with the binding, therefore averagely separating left from right page.}
+    \caption[Mean over all images by layout]{The mean over all greyscaled images grouped by book layout: (a) shows the mean of scans with wide, single pages while (b) shows images with two pages per scan. The \textcolor{blue}{blue rectangle} shows the cropping window and the \textcolor{olive}{green line} represents the horizontal center of the scan. It seems to correspond with the binding, therefore averagely separating left from right page.}
     \label{fig:average}
 \end{figure}
 
@@ -96,18 +102,18 @@ Computer Vision research yielded various kinds of keypoints, most prominently \e
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{keypoint-evaluation.pdf}
-    \caption{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the grey horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
+    \caption[Scatterplot of keypoint performance]{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the grey horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
     \label{fig:keypoint-evaluation}
 \end{figure}
 
 The results are presented in figure \ref{fig:keypoint-evaluation}. AKAZE UPRIGHT seems to have the best performance. Here, rotational invariance was explicitly \emph{not} included since the original images were scanned after cleanly aligning them on a table. This seems to bolster the keypoints' discriminative power. Nevertheless, the current results are far from satisfactory; from a performance standpoint as well as from the stability of the approach. Can we improve upon this by incorporating additional information?
 
-\subsection{Projective Transformation}
+\subsection{Projective Transformations}
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{pipeline.pdf}
-    \caption{Starting out from Keypoint Matching described in section~\ref{sec:keypoint-matching} a pipeline was built, reducing the number of false positives by incorporating additional information and storing the results for further usage in a relational database (SQL).}
+    \caption[Full processing pipeline]{Starting out from Keypoint Matching described in section~\ref{sec:keypoint-matching} a pipeline was built, reducing the number of false positives by incorporating additional information and storing the results for further usage in a relational database (SQL).}
     \label{fig:pipeline}
 \end{figure}
 
@@ -118,7 +124,7 @@ A Perspective Transformation (or \emph{Homography}) is a matrix $\mathbf{H}$ for
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{ransac-performance.png}
-    \caption{Precision and recall, by threshold on the number of keypoints. This is but a small part from the whole curve, just showing values above $0.95$. The recall is always on an excellent level while the threshold should not be too low because precision will collapse otherwise.}
+    \caption[RANSAC performance]{Precision and recall, by threshold on the number of keypoints. This is but a small part from the whole curve, just showing values above $0.95$. The recall is always on an excellent level while the threshold should not be too low because precision will collapse otherwise.}
     \label{fig:ransac}
 \end{figure}
 
@@ -138,7 +144,7 @@ Using RANSAC leads to outstanding results. Values for precision and recall---dep
         \includegraphics[width=\textwidth]{homography-cause.jpg}
         \caption{}
     \end{subfigure}
-    \caption{Two examples for perspective transformations: In this case, a good transformation as in (a) will have no perceptible effect, just slightly shifting some pixels. The image in (b) is the result of a bad transformation, shifting perspective in a way the original image can not be recognized anymore. This is caused by incorrect keypoint matching as seen in (c) where the majority of keypoints on the left page is matched to a single point on the right page.}
+    \caption[Perspective transformation examples]{Two examples for perspective transformations: In this case, a good transformation as in (a) will have no perceptible effect, just slightly shifting some pixels. The image in (b) is the result of a bad transformation, shifting perspective in a way the original image can not be recognized anymore. This is caused by incorrect keypoint matching as seen in (c) where the majority of keypoints on the left page is matched to a single point on the right page.}
     \label{fig:homography-compare}
 \end{figure}
 
@@ -153,7 +159,16 @@ The threshold of $0.001$ is quite conservative and might even be chosen one magn
 
 \subsection{Relational Databases}
 
+There are numerous possibilities for storing the results from the aforementioned calculations: keypoints, matches, transformations... Here, it seems most sensible to use relational databases, a mature concept based on Codd's \emph{relational model} from 1970.\cite{codd1970relational} This allows for easy preservation of the relations between the data points as well as easy retrieval.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{erschema.pdf}
+    \caption[Entity-relationship diagram]{An entity-relationship diagram describing the relations between data points; e.g. each print has multiple pages, each page has multiple keypoints, and keypoint can potentially be matched to each other.}
+    \label{fig:er-schema}
+\end{figure}
+
+The entity-relationship diagram in figure~\ref{fig:er-schema} can give a rough overview of the general structure of the database. There are numerous software implementations available and most frontend frameworks offer bindings, thus allowing for easily building visualizations.
 
 \section{Conclusion}
 
