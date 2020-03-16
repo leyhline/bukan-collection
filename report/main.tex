@@ -7,7 +7,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 
-\usepackage[backend=biber,style=numeric]{biblatex}
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
 \addbibresource{references.bib}
 
 \renewcommand*\contentsname{Table of Contents}
@@ -31,7 +31,7 @@
 
 The \emph{Center for Open Data in the Humanities} (CODH) is a joint research institution in Tokyo, Japan. Its goal is the promotion of data-driven research in the humanities.\cite{kitamoto2017codh} For this purpose they were releasing a number of data sets, all of them related to Japanese history and arts. This work started out by specifically looking at the \emph{Bukan Collection}\cite{codh2018bukan}, around 370 books with information about government officials during the 18th and 19th century. So, how can we assist humanities researchers with techniques from Computer Science?
 
-By applying well-known algorithms from Computer Vision on the books' pages, without using information about the written content, we were able to develop a reliable system for spotting and visualizing similarities. This might be a first step into building a timeline of a book's prints, thus exposing some historical events hidden in there.
+By applying well-known algorithms from Computer Vision on the books' pages, without using information about the written content, a reliable system for spotting and visualizing similarities has been developed. This might be a first step into building a timeline of a book's prints, thus exposing some historical events hidden in there.
 
 But more importantly, this is an example of how even conservative algorithms can give compelling results by using a few reasonable assumptions on the corresponding data. Even basic computer-aided quantitative analysis might reveal information that is near invisible to a human researcher.
 
@@ -50,11 +50,11 @@ This work was mainly concerned with extracting information from a specific type 
 
 Back then, the Bukan were bestsellers. Often, it was vital knowledge to be able to identify feudal lords and their subordinates. Mistakes when determining the difference in status could easily lead to dispute, sometimes even in a violent manner.\cite{dower1990elements} Nevertheless, publishing of the Bukan was not centralized and therefore not standardized. Especially the layout of the pages---even of books from the same year---might differ to some degree.
 
-The language barrier and the layout difference might seem to complicate the application of common algorithms from Natural Language Processing and Computer Vision. But utilizing the knowledge about the specific data at hand, about the Bukan and especially about their production, we define a problem that is more approachable. This can be done by looking at the printing process.
+The language barrier and the layout differences might seem to complicate the application of common algorithms from Natural Language Processing and Computer Vision. But utilizing the knowledge about the specific data at hand, about the Bukan and especially about their production, defining a more approachable problem is possible. This can be done by looking at the printing process.
 
-The books were created using Japanese woodblock-printing. Specialized craftspeople were carving out whole pages from wood. By applying ink on these blocks, numerous prints could be created with comparatively low costs per unit. But it is not like all pages made with the same woodblock would look identical. On the one hand, there are differences in quality of the printed page, stemming from e.g. the amount of ink or the state of the woodblock. On the other hand, the woodblocks itself might have been modified between prints. Some names could have been added, some removed or some symbols modified.
+The books were created using Japanese woodblock-printing. Specialized craftspeople were carving out whole pages from wood. By applying ink on these blocks, numerous prints were created with comparatively low costs per unit. But it is not like all pages made with the same woodblock would look identical. On the one hand, there are differences in quality of the printed page, stemming from e.g. the amount of ink or the state of the woodblock. On the other hand, the woodblocks itself might have been modified between prints. Some names could have been added, some removed or some symbols modified.
 
-These differences can indicate historical occurrences. Changing family structures like births and deaths as well as gain or loss of status. A scholar in history and old literature will be able to interpret these findings. This work is about supplying her with interactive tools for quickly spotting such sections of interest.
+These differences might indicate historical occurrences: changing family structures like births and deaths as well as gain or loss of status. A scholar in history and literature will be able to interpret these findings. This work is about supplying her with interactive tools for quickly spotting such sections of interest.
 
 \section{Method}
 
@@ -62,7 +62,7 @@ For tackling this task, three common techniques are used:
 
 \begin{enumerate}
     \item \emph{Keypoint Detection and Matching}, a method from Computer Vision used for finding the same object in different images.
-    \item \emph{Projective Transformation} for comparing two different images, regardless their original orientation.
+    \item \emph{Projective Transformations} for comparing two different images, regardless their original orientation.
     \item \emph{Relational Databases} for easily storing results as well as querying for relevant pages.
 \end{enumerate}
 
@@ -71,7 +71,7 @@ At the end there will be a database populated with the necessary data for easily
 \subsection{Keypoint Matching}
 \label{sec:keypoint-matching}
 
-As a first step, it is necessary to compare a large number of images. This must be computationally viable and invariable to a number of transformations. The original images---as they were stored by the digital camera---have a width of $5616$ and height of $3744$ pixels. Thus, each image has around 21 million pixels with three color chanels each.
+As a first step, it is necessary to compare a large number of images. This must be computationally viable and invariant to a number of image transformations. The original images---as they were stored by the digital camera---have a width of $5616$ and height of $3744$ pixels. Thus, each image has around 21 million pixels with three color channels each.
 
 \begin{figure}
     \centering
@@ -83,15 +83,15 @@ As a first step, it is necessary to compare a large number of images. This must 
         \includegraphics[width=\textwidth]{portrait-average.jpg}
         \caption{}
     \end{subfigure}
-    \caption[Mean over all images by layout]{The mean over all greyscaled images grouped by book layout: (a) shows the mean of scans with wide, single pages while (b) shows images with two pages per scan. The \textcolor{blue}{blue rectangle} shows the cropping window and the \textcolor{olive}{green line} represents the horizontal center of the scan. It seems to correspond with the binding, therefore averagely separating left from right page.}
+    \caption[Mean over all images by layout]{The mean over all grayscaled images grouped by book layout: (a) shows the mean of scans with wide, single pages while (b) shows images with two pages per scan. The \textcolor{blue}{blue rectangle} shows the cropping window and the \textcolor{olive}{green line} represents the horizontal center of the scan. It seems to correspond with the binding, therefore averagely separating left from right page.}
     \label{fig:average}
 \end{figure}
 
-Under the assumption, that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, basic image transformations are applied. All scans are resized by $25\%$, converted to greyscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center. See figure \ref{fig:average}.
+Under the assumption that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, basic image transformations are applied. All scans are resized by $25\%$, converted to grayscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center. See figure \ref{fig:average}.
 
-Now, each image has still around $650,000$ pixels. Moreover, at least some \emph{translational invariance} is required since the images are not always perfectly aligned to each other. It is also necessary to consider that letters and symbols vary in thickness, depending on the amount of ink used during printing. This is where \emph{Keypoint Detection} comes in. The general idea is to find points of interest in an image that are most noticable and give an unique description of the local area surrounding them.This description is mostly abstract, hence invariant to many kinds of transformations. For details, see \cite[Ch.4]{szeliski2010computer}
+Now, each image has still around $650,000$ pixels. Moreover, at least some \emph{translational invariance} is required since the images are not always perfectly aligned to each other. It is also necessary to consider that letters and symbols vary in thickness, depending on the amount of ink used during printing. This is where \emph{Keypoint Detection} comes in. The general idea is to find points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. This description is mostly abstract, hence invariant to many kinds of transformations. For details, see \cite[Ch.4]{szeliski2010computer}
 
-Computer Vision research yielded various kinds of keypoints, most prominently \emph{SIFT}.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the \emph{Shūchin Bukan} (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages. However, most of the time an identical page number corresponds to matching page content (e.g. page 10 of two prints was made using the same woodblock). To remove this bias, a potential matching of all possible page-keypoint combinations was computed while discarding matching pages where the number of matching keypoints was below a given threshold. The final metric was the intersection of the precision and the recall curve. The following algorithms were evaluated:
+Computer Vision research produced various kinds of keypoints, most prominently \emph{SIFT}.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the \emph{Shūchin Bukan} (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages. However, most of the time an identical page number corresponds to matching page content (e.g. page 10 of two prints was made using the same woodblock). To remove this bias, a potential matching of all possible page-keypoint combinations was computed while discarding matching pages where the number of matching keypoints was below a given threshold. The metric for evaluation is the value at the intersection of the precision and the recall curve. The following algorithms were evaluated:
 
 \begin{itemize}
     \setlength\itemsep{0em}
@@ -105,7 +105,7 @@ Computer Vision research yielded various kinds of keypoints, most prominently \e
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{keypoint-evaluation.pdf}
-    \caption[Scatterplot of keypoint performance]{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the grey horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
+    \caption[Scatterplot of keypoint performance]{Scatterplot showing the positions of intersection of various precision-recall curves depending on the threshold of the number of matching keypoints. All points above the gray horizontal line at $0.8$ are considered “good enough” by the author. Even though this metric discards much information, there is a general tendency in favor of AKAZE UPRIGHT discernible.}
     \label{fig:keypoint-evaluation}
 \end{figure}
 
@@ -121,9 +121,9 @@ The results are presented in figure \ref{fig:keypoint-evaluation}. AKAZE UPRIGHT
     \label{fig:pipeline}
 \end{figure}
 
-There is, of course, more information that can be used for improving the performance. As a first step, filtering matching keypoints by their quality and position is useful. Here, matches with a distance\footnote{AKAZE keypoints yield binary descriptors. Two such descriptors can be compared calculating the \emph{Hamming Distance}, where a larger distance implies a larger perceptible difference.} over 100 are removed. The same goes for matches, where the keypoint pair is more than 100 pixels apart from each other. With this, larger translations are not allowed since we assume clean alignment during the scanning proces. But by far the largest improvements in performance are gained by attempting a Perspective Transformation between two images.
+There is, of course, more information that can be used for improving the performance. As a first step, filtering matching keypoints by their quality and position is useful. Here, matches with a distance\footnote{AKAZE keypoints yield binary descriptors. Two such descriptors can be compared calculating the \emph{Hamming Distance}, where larger distances implies a larger perceptible difference.} above 100 are removed. The same goes for matches, where the keypoint pair is more than 100 pixels apart from each other. With this, larger translations are not allowed since we assume clean alignment during the scanning process. But by far the largest improvements in performance are gained by attempting a \emph{Projective Transformation} between two images.
 
-A Perspective Transformation (or \emph{Homography}) is a matrix $\mathbf{H}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$. This allows for not only linear transformations like translation and rotation but also for perspective transformations. Here, since it is about flat images, the matrix is three-dimensional: $\mathbf{H} \in \mathbb{R}^{3 \times 3}$. Details can be found in most books on Computer Graphics like \cite{marschner2015fundamentals} since these calculations are elementary to modern 3D applications. For finding such a transformation from matching keypoints---even though it is not sure if these matches are always correct---the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is used.\cite{fischler1981random} Its basic idea is that a random subset of matching keypoint pairs is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked. 
+A Projective Transformation (or \emph{Homography}) is a matrix $\mathbf{H}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$. This not only allows linear transformations like translation and rotation but also perspective transformations. Here---since the task is about flat images---the matrix is three-dimensional: $\mathbf{H} \in \mathbb{R}^{3 \times 3}$. Details can be found in most books on Computer Graphics like \cite{marschner2015fundamentals} since these calculations are elementary to modern 3D applications. For finding such a transformation from matching keypoints---even though it is not sure if these matches are always correct---the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is used.\cite{fischler1981random} Its basic concept is that a random subset of matching keypoint pairs is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked. 
 
 \begin{figure}
     \centering
@@ -148,11 +148,11 @@ Using RANSAC leads to outstanding results. Values for precision and recall---dep
         \includegraphics[width=\textwidth]{homography-cause.jpg}
         \caption{}
     \end{subfigure}
-    \caption[Perspective transformation examples]{Two examples for perspective transformations: In this case, a good transformation as in (a) will have no perceptible effect, just slightly shifting some pixels. The image in (b) is the result of a bad transformation, shifting perspective in a way the original image can not be recognized anymore. This is caused by incorrect keypoint matching as seen in (c) where the majority of keypoints on the left page is matched to a single point on the right page.}
+    \caption[Projective transformation examples]{Two examples for projective transformations: In this case, a good transformation as in (a) will have no perceptible effect, just slightly shifting some pixels. The image in (b) is the result of a bad transformation, shifting perspective in a way the original image can not be recognized anymore. This is caused by incorrect keypoint matching as seen in (c) where the majority of keypoints on the left page is matched to a single point on the right page.}
     \label{fig:homography-compare}
 \end{figure}
 
-A last source of failure that can easily be eliminated are extreme perspective transformations as seen in figure~\ref{fig:homography-compare}. Caused by incorrect keypoint matching, RANSAC mistakenly results in extreme perspective shifts that nevertheless are deemed possible by the algorithm. This makes up for less than $1\%$ of false positives, but can be corrected by removing matches where the projective elements from $\mathbf{H}$ are too extreme. Accordingly, transformations must conform to these two inequalities:
+A last source of failure that can easily be eliminated are extreme transformations in perspective as seen in figure~\ref{fig:homography-compare}. Caused by incorrect keypoint matching, RANSAC mistakenly results in extreme perspective shifts that nevertheless are deemed possible by the algorithm. This makes up for less than $1\%$ of false positives, but can be corrected by removing matches where the projective elements from $\mathbf{H}$ are too extreme. Accordingly, transformations must conform to these two inequalities:
 
 \begin{gather*}
     |\mathbf{H}_{1,3}| \leq 0.001\\
@@ -164,7 +164,7 @@ The threshold of $0.001$ is quite conservative and might even be chosen one magn
 \subsection{Relational Databases}
 \label{sec:relational-databases}
 
-There are numerous possibilities for storing the results from the aforementioned calculations (keypoints, matches, transformations). Here, it seems most sensible to use relational databases, a mature concept based on Codd's \emph{relational model} from 1970.\cite{codd1970relational} This allows for easy preservation of the relationships between the data points as well as easy retrieval.
+There are numerous possibilities for storing the results from the aforementioned calculations (keypoints, matches, transformations). Here, it seems most sensible to use relational databases, a mature concept based on Codd's \emph{Relational Model} from 1970.\cite{codd1970relational} This allows for easy preservation of the relationships between the data points as well as easy retrieval.
 
 \begin{figure}
     \centering
@@ -173,7 +173,7 @@ There are numerous possibilities for storing the results from the aforementioned
     \label{fig:er-schema}
 \end{figure}
 
-The entity-relationship diagram in figure~\ref{fig:er-schema} can give a rough overview of the general structure of the database. There are numerous software implementations available and most frontend frameworks offer bindings, thus allowing for easily building visualizations. When inspecting these relation in detail, another problem occurs; again of computational nature. Reading the diagram from left to right:
+The entity-relationship diagram in figure~\ref{fig:er-schema} can give a rough overview of the general structure of the database. There are numerous software implementations available and most frontend frameworks offer bindings, thus allowing for easily building visualizations. When inspecting these relations in detail, another problem occurs; again of computational nature. Reading the diagram from left to right:
 
 \begin{itemize}
     \setlength\itemsep{0em}
@@ -190,7 +190,7 @@ Hence, for 370 books, the total number of keypoints is approximately $n = 370 \c
 
 Even using the abundant computational power that is available nowadays, calculating 400 trillion matches for just a few hundred books is infeasible, not to mention storing them. It might be possible to speed this up algorithmically, using suitable data structures. Instead, a simpler approach was chosen.
 
-By making two assumption about the data---the Bukan Collection---it is easy to drastically reduce the number of matching operations. First, matching pages are only expected between prints of the same book title.\footnote{There are 44 distinct book titles in the bukan collection, each with a different number of prints, ranging from 100 prints for the Shūgyoku Bukan (袖玉武鑑) down to only a single print for 14 titles.} Second, the offset between pages should not be more than 8 pages in both directions; for example page~10 of one book will not compared to all the pages of the other book anymore. Instead, this page~10 is only matched with pages~2-18 (in total 17) of the other book. For two books with 250 pages this would result in much less page comparisons:
+By making two assumptions about the data---the Bukan Collection---it is easy to drastically reduce the number of matching operations. First, matching pages are only expected between prints of the same book title.\footnote{There are 44 distinct book titles in the Bukan Collection, each with a different number of prints, ranging from 100 prints for the Shūgyoku Bukan (袖玉武鑑) down to only a single print for 14 titles.} Second, the offset between pages should not be more than 8 pages in both directions; for example page~10 of one book will not be compared to all the pages of the other book anymore. Instead, this page~10 is only matched with pages~2-18 (in total 17) of the other book. For two books with 250 pages this would result in much less page comparisons:
 
 \begin{align*}
     250^2 &= 62,500 & \text{naive matching} \\
@@ -198,9 +198,11 @@ By making two assumption about the data---the Bukan Collection---it is easy to d
     \frac{62,500}{4,250} &\approx 14.7 & \text{speedup factor}
 \end{align*}
 
-Moreover, the number of matches now increases linearly instead of quadratic, leading to an even larger “speedup factor” for books with more pages.
+Moreover, from a complexity standpoint, there is no quadratic increase in the number of matches anymore. Instead, it is increasing linearly, leading to an even larger “speedup factor” for books with more pages.
 
 \section{Conclusion}
+
+Even though many techniques were applied, it is primarily just about keypoint matching and running RANSAC on the results. Both are mature, well-understood and most importantly well-documented. Likewise, there are many parameters when setting up this pipeline. But it seems like the majority does not have a significant influence on the overall performance (save for the threshold at the very end of the pipeline), thus allowing easy implementation.
 
 \begin{figure}
     \centering
@@ -211,7 +213,7 @@ Moreover, the number of matches now increases linearly instead of quadratic, lea
 
 At the end of this work, there is a database holding information about matching keypoints and page transformations. For each matching page pair found, it is now possible to align them and applying simple, pixelwise operations for visualizing the differences. For an example see figure~\ref{fig:page-compare}.
 
-A scholar in the humanities and literature can now interactively browse these books and quickly identify interesting parts. This will hopefully lessen her burden when examining a large number of pages, since small, abstract differences are often hard to discern for the human eye. So instead of exhausting her cognitive ability by just staring at pages, it will now be easier to extract information from the actual content.
+A scholar in the humanities and literature can now interactively browse these books and quickly identify interesting parts. This will hopefully lessen her burden when examining numerous pages, since small, abstract differences are often hard to discern for the human eye. So instead of exhausting her cognitive ability by staring at pages alone, it will now hopefully be easier to extract information from the actual content.
 
 \section{Further Improvements}
 
