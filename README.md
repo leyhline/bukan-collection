@@ -12,6 +12,17 @@ For more details, just have a look at my [Internship Report](InternshipReport.pd
 
 I used this repository mainly for running experiments. Obviously, I was not quite sure about my approach, its performance and the usefulness of the results, which reflects in the messy structure and the large number of Jupyter notebooks.
 
+* `00-data-validation.ipynb` to `08-pipeline-multiprocessing.ipynb` are Jupyter notebooks I created as I did my experiments. In general the later the more advanced.
+* `annotations/` are—as the name implies—annotations I created manually for the Shuuchin Bukan volumes. I wrote down the offset between pages so I had a ground truth to test against.
+* `helpers/` are just some Python functions I used in the notebooks.
+* `report/` and `slides/` are for documentation purpse during and at the end of my internship.
+* `static/` and `templates/` are for the Flask webserver `server.py`
+* `schema.sql` is for creating a SQL database to put the data into. This first database design is mediocre.
+* There are also multiple `*.csv` files with metadata for the Bukan Collection
+* There are two data folders that do not exist in this repository:
+    * `data/` where the original data from the CODH website is saved by `downloadcollection.py`
+    * `output/` where processed data is saved
+
 ## Dependencies
 
 First you need to download the data. Next you need to install the Python dependencies (recommended: in a virtualenvironment).
