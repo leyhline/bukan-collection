@@ -1,5 +1,5 @@
 """
-bukan
+bukan.bukan
 ~~~~~
 
 Essential functions for comparing two printed pages.
