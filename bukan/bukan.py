@@ -38,7 +38,7 @@ HAMMING_MATCHER = cv.BFMatcher_create(normType=cv.NORM_HAMMING)
 """When matching AKAZE features, this calculates the hamming distance between descriptors."""
 
 
-def read_image(path: os.PathLike) -> np.ndarray:
+def read_image(path: str) -> np.ndarray:
     """
     Using OpenCV to read the image at `path` into memory.
     This directly returns the greyscaled image, even if it is originally

@@ -29,6 +29,8 @@ import argparse
 import json
 import sys
 import os
+import gzip
+from pathlib import Path
 from base64 import b64encode
 from typing import List, Dict, Any
 import cv2 as cv
@@ -56,22 +58,50 @@ def zip_features(keypoints: List[cv.KeyPoint],
     return features
 
 
-def main(img_path, out):
+def image_to_features(img_path: str) -> Dict[str, Any]:
     img = read_image(img_path)
     img = crop_image(img)
     keypoints, descriptors = detect_features(img)
     features = zip_features(keypoints, descriptors)
     _, img_filename = os.path.split(img_path)
     fobj = {"filename": img_filename, "features": features}
-    json.dump(fobj, out)
+    return fobj
+
+
+def folder_to_features(img_folder: os.PathLike) -> List[Dict[str, Any]]:
+    img_folder = Path(img_folder)
+    feature_objects = []
+    for child in img_folder.iterdir():
+        if child.is_file() and child.suffix in [".jpg", ".jpeg"]:
+            fobj = image_to_features(str(child))
+            feature_objects.append(fobj)
+    return feature_objects
+
+
+def main(img_folder, out, do_compress):
+    if not os.path.isdir(img_folder):
+        raise NotADirectoryError(img_folder)
+    features = folder_to_features(img_folder)
+    results = {"path": img_folder, "images": features}
+    if out is None:
+        fd = sys.stdout
+        json.dump(results, fd)
+    elif do_compress:
+        fbytes = json.dumps(results).encode()
+        with gzip.open(out + ".gz", "xb") as fd:
+            fd.write(fbytes)
+    else:
+        with open(out, "x") as fd:
+            json.dump(results, fd)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=
         "Detecting keypoints in images, producing JSON output")
-    parser.add_argument("img", type=str, metavar="PATH",
-                        help="Path to an image file.")
-    parser.add_argument("-o", type=argparse.FileType("x"), default=sys.stdout,
-                        metavar="FILENAME", help="Name of output file. (defaults to stdout)")
+    parser.add_argument("img", metavar="PATH",
+                        help="Path to a folder of JPEG images.")
+    parser.add_argument("-o", "--output", metavar="FILENAME",
+                        help="Name of output file. (defaults to stdout)")
+    parser.add_argument("-C", "--compress", action="store_true", help="Enable gzip compression.")
     args = parser.parse_args()
-    main(args.img, args.o)
+    main(args.img, args.output, args.compress)
