@@ -4,9 +4,10 @@ bukan.keypoint
 
 High-level interface for bukan.py.
 
-Takes one image as input (i.e. a file system path) and produces
-a JSON file as output, representing a list of OpenCV KeyPoint objects.
-<https://docs.opencv.org/4.2.0/d2/d29/classcv_1_1KeyPoint.html> 
+Takes one folder of images (i.e. a file system path) and produces
+a JSON file as output, representing a list of OpenCV KeyPoint objects
+<https://docs.opencv.org/4.2.0/d2/d29/classcv_1_1KeyPoint.html>
+for each image in the given folder.
 
 :copyright: (c) 2020 Thomas Leyh <leyht@informatik.uni-freiburg.de>
 :licence: GPLv3, see LICENSE
@@ -40,6 +41,11 @@ from bukan import detect_features, read_image, crop_image
 
 def zip_features(keypoints: List[cv.KeyPoint],
                  descriptors: np.ndarray) -> List[Dict[str, Any]]:
+    """
+    Takes a list of `keypoints` and an array of `descriptors` as they
+    are returned from OpenCV and merges them into a human-readable
+    representation to make JSON serialization possible.
+    """
     assert len(keypoints) == descriptors.shape[0]
     features = []
     for i in range(len(keypoints)):
@@ -59,6 +65,10 @@ def zip_features(keypoints: List[cv.KeyPoint],
 
 
 def image_to_features(img_path: str) -> Dict[str, Any]:
+    """
+    Reads the image at `img_path` and returns a dictionary with
+    the filename and a list of all `cv.KeyPoint` objects found.
+    """
     img = read_image(img_path)
     img = crop_image(img)
     keypoints, descriptors = detect_features(img)
@@ -69,12 +79,27 @@ def image_to_features(img_path: str) -> Dict[str, Any]:
 
 
 def folder_to_features(img_folder: os.PathLike) -> List[Dict[str, Any]]:
+    """
+    Scans `img_folder` for JPEG files, detects keypoints and returns
+    a list of dictionaries, each one holding information about the
+    `cv.KeyPoint` objects and the image's filename.
+    """
     img_folder = Path(img_folder)
     feature_objects = []
-    for child in img_folder.iterdir():
-        if child.is_file() and child.suffix in [".jpg", ".jpeg"]:
+    image_files = [child for child in img_folder.iterdir()
+                   if child.is_file() and child.suffix in [".jpg", ".jpeg"]]
+    counter = 0
+    total = len(image_files)
+    for child in image_files:
+        try:
             fobj = image_to_features(str(child))
             feature_objects.append(fobj)
+        except Exception as e:
+            sys.stderr.write(f"\nWARNING {e} ({child})\n")
+        counter += 1
+        sys.stdout.write(f"\rProcessed images: {counter} / {total}")
+        sys.stdout.flush()
+    sys.stdout.write("\n")
     return feature_objects
 
 
@@ -83,16 +108,15 @@ def main(img_folder, out, do_compress):
         raise NotADirectoryError(img_folder)
     features = folder_to_features(img_folder)
     results = {"path": img_folder, "images": features}
-    if out is None:
-        fd = sys.stdout
-        json.dump(results, fd)
-    elif do_compress:
-        fbytes = json.dumps(results).encode()
-        with gzip.open(out + ".gz", "xb") as fd:
-            fd.write(fbytes)
+    if do_compress:
+        results = json.dumps(results).encode()
+        out += ".gz"
+        with gzip.open(out, "xb") as fd:
+            fd.write(results)
     else:
         with open(out, "x") as fd:
             json.dump(results, fd)
+    print(f"{len(features)} keypoint lists written to: {out}")
 
 
 if __name__ == "__main__":
@@ -100,8 +124,8 @@ if __name__ == "__main__":
         "Detecting keypoints in images, producing JSON output")
     parser.add_argument("img", metavar="PATH",
                         help="Path to a folder of JPEG images.")
-    parser.add_argument("-o", "--output", metavar="FILENAME",
-                        help="Name of output file. (defaults to stdout)")
+    parser.add_argument("-o", "--output", metavar="FILENAME", default="keypoint.json",
+                        help="Name of output file. (default: keypoint.json)")
     parser.add_argument("-C", "--compress", action="store_true", help="Enable gzip compression.")
     args = parser.parse_args()
     main(args.img, args.output, args.compress)
