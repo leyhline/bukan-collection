@@ -8,7 +8,7 @@
 \usepackage{amsmath}
 \usepackage{authblk}
 
-\title{Vision-based Comparison and Display of Different Versions of Woodblock-printed Books and its Application to Bukan}
+\title{Computer Vision for Comparison and Display of Different Versions of Woodblock-printed Books and its Application to Bukan}
 
 \author[1,3]{Thomas Leyh}
 \author[2,3]{Asanobu Kitamoto}
@@ -27,40 +27,35 @@
 
 \section{Introduction}
 
-In the Digital Humanitites, one of the basic goals is to make comparison possible. This allows for easier classification and enables search in a given dataset. On the one hand, there are numerous text-based methods along with large corpera of literary text. On the other hand, the emerge of large image datasets directly leads to methods from Computer Vision, skipping the necessarity of text transcriptions. This paper describes the technical development of this approach as well as its application to Bukan, a special type of Japanese woodblock printed books.
+In the Digital Humanitites, one of the basic goals is to make comparison possible. This allows for easier classification and enables search inside a dataset. On the one hand, there are numerous text-based methods along with large corpera of literary text. On the other hand, the emerge of large image datasets directly leads to methods from Computer Vision, skipping the necessarity of text transcriptions. This paper describes the technical development of this approach as well as its application to Bukan, a special type of Japanese woodblock printed books.
 
 The authors have been approaching this problem in the past. \cite{kitamoto2018} proposed the concept of “differential reading” for visual comparison. Furthermore, \cite{hakim2019} proposed “visual named-entity recognition” for identifying family crests, using them for a page-by-page matching across different versions. This paper is a follow-up of these works and proposes a keypoint-based method for the page-by-page matching, additionally yielding an option for highlighting differences. 
 
-% Methods for comparing and displaying different versions are one of the most basic tools in digital humanities research. Text-based methods have been developed for a long time along with the development of large corpus for literary text. On the other hand, the development of large image dataset for literary text leads to a new type of version comparison methods, namely computer vision-based comparison, which does not require text transcription from digitized images. This paper describes the technical development of the approach, and also its application to Bukan, which is a special type of Japanese woodblock printed books. 
+\section{Dataset}
 
-% This approach is suitable for woodblock printing, because the same woodblock had been reused for many versions of the book with minor modifications. Visual comparison of the books reveals which part of the woodblock had been modified or which part had been degraded.  Differences in versions may help answer some of the research questions in the humanities, such as the political change of the government or the life career of people.
+This work is mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from the Edo period (1603-1868). Serving as \emph{unofficial} directories of Japanese bureaucrats, they include a wealth of information about regional characteristics such as persons, families and other key factors. See figure~\ref{fig:shuugyokubukan006} for an example. These books were created with woodblock-printing. Because the same woodblock has been reused for many versions of the book---sometimes with minor modifications---visual comparison can reveal which part of the woodblock was modified or has degraded.
 
-% The authors have been working on this problem from many approaches. \cite{kitamoto2018} proposes the concept of "differential reading" for visual comparison, and \cite{hakim2019} proposed the "visual named-entity recognition" approach to identify the same family crest to make a page-by-page matching across different versions. This paper is a follow-up of these previous works and proposes the keypoint-based methods for the page-by-page matching in addition to highlighting differences. 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{200019500_00006}
+    \caption[Shūgyoku Bukan (袖玉武鑑), page 6]{Shūgyoku Bukan (袖玉武鑑) from 1861, page 6; showing names, descriptions, family crests and procession items. Especially interesting are the blank areas on the right, because in other edition they contain text.}
+    \label{fig:shuugyokubukan006}
+\end{figure}
 
-\section{Dataset and Method}
+ROIS-DS Center for Open Data in the Humanities and the National Institute of Japanese Literature are offering 381 of these Bukan as open data \cite{pmjt}. The original images have a width of $5616$ and height of $3744$ pixels. Under the assumption that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, basic image transformations are applied. All scans are resized by $25\%$, converted to grayscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec venenatis lacus non luctus porttitor. Donec eros sem, porttitor sed volutpat et, tincidunt eget arcu. Nunc dui risus, eleifend et faucibus nec, dignissim ut ex. Curabitur hendrerit dictum ex. Fusce lacinia finibus ligula, congue hendrerit magna porta pellentesque. Duis luctus libero neque, at ultricies mauris scelerisque eget. Duis vitae blandit neque. Nulla enim tortor, tempor a ullamcorper non, feugiat tincidunt ante. Etiam et pulvinar arcu, id mollis diam.
+\section{Method}
 
-Proin hendrerit ex id metus blandit, a auctor dui pretium. Suspendisse et tortor felis. Morbi eget erat molestie, scelerisque eros quis, sagittis lectus. In ex erat, mollis id dolor id, pellentesque faucibus lacus. Sed vehicula metus lectus, ac facilisis arcu varius a. Cras scelerisque, magna non molestie suscipit, purus sem malesuada ante, sed dignissim felis dui sed nisi. Suspendisse ultricies scelerisque orci, rutrum sagittis lectus pretium nec. Integer ac lectus et erat laoreet molestie eget sit amet ligula. Suspendisse ut diam sit amet ex dignissim lobortis a eu lacus. Etiam sem augue, placerat a sapien a, lobortis consectetur diam. Donec quis ipsum eget nibh faucibus vestibulum et id leo. Nunc eros mi, malesuada ac porttitor quis, cursus sed turpis. Sed rhoncus dui quis risus commodo, nec lacinia neque tincidunt. Nulla ipsum velit, dapibus at molestie sed, rutrum ac metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
+Using an approach based on Computer Vision, two techniques were applied:
 
-Morbi sed lacinia nisl, iaculis fermentum sapien. Donec gravida, diam sollicitudin tincidunt molestie, nibh odio bibendum nisi, scelerisque aliquet lacus metus nec dolor. Suspendisse suscipit risus quis fringilla euismod. Aenean interdum nunc sit amet sapien congue, vitae imperdiet tellus varius. Suspendisse in neque tempor risus congue commodo. Proin quis odio eu ex eleifend vehicula. Integer tristique, est aliquam pellentesque ultrices, nisi elit semper massa, nec posuere turpis lectus vitae massa. Morbi. 
+\begin{enumerate}
+    \item \emph{Keypoint Detection and Matching} for finding the same features in different images.
+    \item \emph{Projective Transformations} for comparing two different images regardless of their original orientation.
+\end{enumerate}
 
-% This work is mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from the Edo period (1603-1868). As the "unofficial" directory of Japanese bureaucrats, it has a wealth of information about local states such as persons, families and key factors. See figure~\ref{fig:shuugyokubukan006} for an example.
+We used the mature \emph{OpenCV} software library.\cite{opencv_library} 
 
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=\textwidth]{200019500_00006.jpg}
-%     \caption[Shūgyoku Bukan (袖玉武鑑), page 6]{Shūgyoku Bukan (袖玉武鑑) from 1861, page 6; showing names, descriptions, family crests and procession items. Especially interesting are the blank areas on the right. These might be filled in later prints.}
-%     \label{fig:shuugyokubukan006}
-% \end{figure}
-
-% ROIS-DS Center for Open Data in the Humanities and National Institute of Japanese Literature is offering 381 different versions of Bukan page images as open data \cite{pmjt}. The original images have a width of $5616$ and height of $3744$ pixels. Under the assumption that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, basic image transformations are applied. All scans are resized by $25\%$, converted to grayscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center. These pre-processed images were used in the following experiments.
-
-\section{Results and Discussion}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus velit ac sem feugiat tempus. Donec auctor justo blandit turpis dictum viverra. Quisque in augue metus. Nullam rhoncus sed justo ut ornare. Aenean ut tortor nec metus vulputate maximus. Aenean tincidunt ornare nisi, ut suscipit lectus vehicula non. Maecenas sed suscipit arcu. Mauris vitae velit sed justo ultrices interdum. Proin dapibus luctus sapien, id eleifend enim gravida eget.
-
-Donec fringilla augue auctor, iaculis enim sed, eleifend ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisl ex, commodo in posuere ut, egestas at massa. Pellentesque posuere rhoncus leo, iaculis porttitor turpis dignissim ut. Pellentesque rhoncus nisi sed tempus maximus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Quisque sit amet nisl semper, efficitur mauris et, ultricies sem. Nulla facilisi. Cras sit amet ante malesuada, vehicula eros a, laoreet dolor. Duis bibendum massa vel ipsum fermentum, quis scelerisque felis auctor. Sed commodo leo quis nisi interdum venenatis. In tristique nisi ac lobortis tincidunt. Phasellus semper leo quis blandit pulvinar. Proin dapibus lorem sed iaculis congue.
+\section{Results}
 
 Integer finibus libero vestibulum quam aliquam, nec dictum neque lacinia. Suspendisse vulputate porta dictum. Duis ornare enim tortor, sit amet accumsan neque hendrerit non. Nunc auctor ipsum et ornare finibus. Proin maximus aliquam lobortis. Donec sed ullamcorper metus, vel posuere ex. Curabitur efficitur risus ante, vel auctor odio suscipit vulputate. Donec ut justo et lacus consectetur commodo eget sed tellus. Quisque rutrum, nunc sit amet euismod efficitur, dui nisi bibendum leo, interdum ultricies est lorem vitae tortor. Praesent lorem tortor, molestie a scelerisque ut, ornare vitae urna. Suspendisse faucibus sollicitudin dui vel pellentesque. Suspendisse potenti. Aenean sollicitudin placerat lacus nec tempor.
 
