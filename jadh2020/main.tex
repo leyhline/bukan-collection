@@ -29,7 +29,7 @@
 
 \section{Introduction}
 
-In the Digital Humanitites, one of the basic goals is to make comparison possible. This allows for easier classification and enables search inside a dataset. On the one hand, there are numerous text-based methods along with large corpera of literary text. On the other hand, the emerge of large image datasets directly leads to methods from Computer Vision, skipping the necessarity of text transcriptions. This paper describes the technical development of this approach as well as its application to Bukan, a special type of Japanese woodblock printed books.
+In the Digital Humanities, one of the basic goals is to make comparison possible. This allows for easier classification and enables search inside a dataset. On the one hand, there are numerous text-based methods along with large corpora of literary text. On the other hand, the emergence of large image datasets directly leads to methods from Computer Vision, skipping the necessity of text transcriptions. This paper describes the technical development of this approach as well as its application to Bukan, a special type of Japanese woodblock printed books.
 
 The authors have been approaching this problem in the past. \cite{kitamoto2018} proposed the concept of “differential reading” for visual comparison. Furthermore, \cite{hakim2019} proposed “visual named-entity recognition” for identifying family crests, using them for a page-by-page matching across different versions. This paper is a follow-up of these works and proposes a keypoint-based method for the page-by-page matching, additionally yielding an option for highlighting differences. 
 
@@ -59,7 +59,7 @@ We used the \emph{OpenCV} software library.\cite{opencv_library}
 
 \subsection{Keypoint Matching}
 
-Keypoint Detection\cite[Ch.4]{szeliski2010computer} is abount finding points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. Computer Vision research produced various kinds of keypoints, most prominently SIFT.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the Shūchin Bukan (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages.
+Keypoint Detection\cite[Ch.4]{szeliski2010computer} is about finding points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. Computer Vision research produced various kinds of keypoints, most prominently SIFT.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the Shūchin Bukan (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages.
 
 \begin{figure}[p]
     \centering
@@ -81,13 +81,13 @@ For images, a Projective Transformation (or Homography) is a matrix $\mathbf{H} 
     \label{fig:ransac}
 \end{figure}
 
-The benefit is twofold: First, the algorithm implicitly uses spartial information of the matching image candidates to filter out false positives, thus greatly boosting the matching performance. Precision and recall are close to their maximum of $1.0$, see figure~\ref{fig:ransac}. Secondly, it directly yields the transformation matrix $\mathbf{H}$, enabling the creation of image overlays for visualizing the differences. Looking at the perspective components of $\mathbf{H}$, additional filtering is done\footnote{By asserting that $|\mathbf{H}_{1,3}| \leq 0.001$ and $|\mathbf{H}_{2,3}| \leq 0.001$.}, removing even more of the remaining false positives.
+The benefit is twofold: First, the algorithm implicitly uses spatial information of the matching image candidates to filter out false positives, thus greatly boosting the matching performance. Precision and recall are close to their maximum of $1.0$, see figure~\ref{fig:ransac}. Secondly, it directly yields the transformation matrix $\mathbf{H}$, enabling the creation of image overlays for visualizing the differences. Looking at the perspective components of $\mathbf{H}$, additional filtering is done\footnote{By asserting that $|\mathbf{H}_{1,3}| \leq 0.001$ and $|\mathbf{H}_{2,3}| \leq 0.001$.}, removing even more of the remaining false positives.
 
 \section{Discussion}
 
-This two-step-pipeline archieves high precision and recall when looking for similar pages of different book editions. Performance seems to be robust with respect to most parameters. A final threshold on the number of matching keypoints decides if a pair of pages is classified as match. Assuming semi-automatic application with a human assessing the results, recall is of higher importance, thus a low threshold of around $40$ is recommended. Besides, this value might be used as score for estimating the similarity of a page pair.
+This two-step-pipeline archives high precision and recall when looking for similar pages of different book editions. Performance seems to be robust with respect to most parameters. A final threshold on the number of matching keypoints decides if a pair of pages is classified as match. Assuming semi-automatic application with a human assessing the results, recall is of higher importance, thus a low threshold of around $40$ is recommended. Besides, this value might be used as score for estimating the similarity of a page pair.
 
-Computing keypoints is possible in linear time with respect to the number of given images. Finding matches takes quadratic time without prior assumptions since image pairs are processed. Speeding this up should be possible by using techniques from robotics, since the situation is similar: A small number of keypoints from image sensors is used for querying a large database of keypoints in memory.
+Computing keypoints is possible in linear time with respect to the number of given images. Finding matches takes quadratic time without prior assumptions since image pairs are processed. Speeding this up should be possible by using techniques from robotics, since the situation is similar: A few keypoints from image sensors is used for querying a large database of keypoints in memory.
 
 \begin{figure}
     \centering
@@ -100,7 +100,7 @@ This can serve as base for building a comparison browser: A scholar in the human
 
 \section{Conclusion}
 
-Open Data and digitalization are accompanied by new possibilities, especially in the humanitites. Here, conservative algorithms from Computer Vision were able to produce excellent results on the given task. Especially RANSAC---despite its age---might still hide some of its potential, like regularly shown in current research e.g. \cite{shen2019ransac}.
+Open Data and digitalization are accompanied by new possibilities, especially in the humanities. Here, conservative algorithms from Computer Vision were able to produce excellent results on the given task. Especially RANSAC---despite its age---might still hide some of its potential, like regularly shown in current research e.g. \cite{shen2019ransac}.
 
 We hope this work can help in humanities research, easing the work of the researchers and give a hand at producing new insights.
 
