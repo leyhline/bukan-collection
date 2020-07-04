@@ -35,7 +35,7 @@ The authors have been approaching this problem in the past. \cite{kitamoto2018} 
 
 \section{Dataset}
 
-This work is mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from the Edo period (1603-1868). Serving as \emph{unofficial} directories of Japanese bureaucrats, they include a wealth of information about regional characteristics such as persons, families and other key factors. See figure~\ref{fig:shuugyokubukan006} for an example. These books were created with woodblock-printing. Because the same woodblock has been reused for many versions of the book---sometimes with minor modifications---visual comparison can reveal which part of the woodblock was modified or has degraded.
+This work is mainly concerned with extracting information from a specific type of book: 武鑑---Bukan. These are historic Japanese books from the Edo period (1603-1868). Serving as unofficial directories of Japanese bureaucrats, they include a wealth of information about regional characteristics such as persons, families and other key factors. See figure~\ref{fig:shuugyokubukan006} for an example. These books were created with woodblock-printing. Because the same woodblock has been reused for many versions of the book---sometimes with minor modifications---visual comparison can reveal which part of the woodblock was modified or has degraded.
 
 \begin{figure}
     \centering
@@ -51,15 +51,15 @@ ROIS-DS Center for Open Data in the Humanities and the National Institute of Jap
 Using an approach based on Computer Vision, two techniques were applied:
 
 \begin{enumerate}
-    \item \emph{Keypoint Detection and Matching} for finding the same features in different images.
-    \item \emph{Projective Transformations} for comparing two different images regardless of their original orientation.
+    \item “Keypoint Detection and Matching” for finding the same features in different images.
+    \item “Projective Transformations” for comparing two different images regardless of their original orientation.
 \end{enumerate}
 
 We used the \emph{OpenCV} software library.\cite{opencv_library}
 
 \subsection{Keypoint Matching}
 
-\emph{Keypoint Detection}\cite[Ch.4]{szeliski2010computer} is abount finding points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. Computer Vision research produced various kinds of keypoints, most prominently \emph{SIFT}.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the \emph{Shūchin Bukan} (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages.
+Keypoint Detection\cite[Ch.4]{szeliski2010computer} is abount finding points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. Computer Vision research produced various kinds of keypoints, most prominently SIFT.\cite{lowe2004sift} For evaluating the performance of these algorithms, 12 prints of the Shūchin Bukan (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages.
 
 \begin{figure}[p]
     \centering
@@ -72,7 +72,7 @@ Using these annotations, six keypoint algorithms were empirically evaluated\foot
 
 \subsection{Projective Transformations}
 
-For images, a Projective Transformation (or \emph{Homography}) is a matrix $\mathbf{H} \in \mathbb{R}^{3 \times 3}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$ ($\vec{x}$ and $\vec{y}$ are interpolated pixel coordinates). This operation results in linear transformations like translation and rotation, but also changes in perspective.\cite{marschner2015fundamentals} For finding such a transformation from matching keypoints, the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is commonly used.\cite{fischler1981random} Basically, a random subset of matching keypoints is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked.
+For images, a Projective Transformation (or Homography) is a matrix $\mathbf{H} \in \mathbb{R}^{3 \times 3}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$ ($\vec{x}$ and $\vec{y}$ are interpolated pixel coordinates). This operation results in linear transformations like translation and rotation, but also changes in perspective.\cite{marschner2015fundamentals} For finding such a transformation from matching keypoints, the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is commonly used.\cite{fischler1981random} Basically, a random subset of matching keypoints is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked.
 
 \begin{figure}[p]
     \centering
@@ -87,7 +87,7 @@ The benefit is twofold: First, the algorithm implicitly uses spartial informatio
 
 This two-step-pipeline archieves high precision and recall when looking for similar pages of different book editions. Performance seems to be robust with respect to most parameters. A final threshold on the number of matching keypoints decides if a pair of pages is classified as match. Assuming semi-automatic application with a human assessing the results, recall is of higher importance, thus a low threshold of around $40$ is recommended. Besides, this value might be used as score for estimating the similarity of a page pair.
 
-Computing keypoints is possible in linear time with respect to the number of given images. Finding matches takes quadratic time without prior assumptions since image pairs are processed. Speeding this up should be possible by using techniques from robotics, since the situation is similar: A small number of keypoints from image sensors is for querying a large database of keypoints in memory.
+Computing keypoints is possible in linear time with respect to the number of given images. Finding matches takes quadratic time without prior assumptions since image pairs are processed. Speeding this up should be possible by using techniques from robotics, since the situation is similar: A small number of keypoints from image sensors is used for querying a large database of keypoints in memory.
 
 \begin{figure}
     \centering
@@ -96,13 +96,13 @@ Computing keypoints is possible in linear time with respect to the number of giv
     \label{fig:page-compare}
 \end{figure}
 
-This can serve as base for building a comparison browser: A scholar in the humanities and literature can browse a book while getting information about similar pages. Differences between pages can be visualized at any time, similar to figure~\ref{fig:page-compare}. This will hopefully lessen her burden when examining numerous pages, since small, abstract differences are often hard to discern for the human eye. 
+This can serve as base for building a comparison browser: A scholar in the humanities and literature can browse a book while getting information about similar pages. Differences between pages can be visualized at any time, similar to figure~\ref{fig:page-compare}. This will hopefully lessen her burden when examining numerous pages, since small, abstract differences are often hard to discern for the human eye. Expanding the database is possible by adding new keypoints for each new page as well as the transformation matrix and the number of matching keypoints for each new page pair.
 
 \section{Conclusion}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula vitae ligula vitae pellentesque. Aliquam placerat commodo urna ac luctus. Nullam aliquam purus diam, vel ornare quam tempor at. In ut est tempus, finibus dolor sed, semper tortor. Cras pharetra mollis nisl. Praesent a nisl tellus. In faucibus, ipsum sit amet varius porta, leo nibh ultrices nisl, a porta nunc nisi commodo tortor. Aenean efficitur viverra urna. Mauris scelerisque orci faucibus, gravida neque non, rutrum enim.
+Open Data and digitalization are accompanied by new possibilities, especially in the humanitites. Here, conservative algorithms from Computer Vision were able to produce excellent results on the given task. Especially RANSAC---despite its age---might still hide some of its potential, like regularly shown in current research e.g. \cite{shen2019ransac}.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent neque ex, ultricies vulputate magna eu, dignissim consequat ligula. Etiam faucibus bibendum dolor, at ultricies. 
+We hope this work can help in humanities research, easing the work of the researchers and give a hand at producing new insights.
 
 \printbibliography
 
