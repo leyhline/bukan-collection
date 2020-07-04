@@ -39,8 +39,8 @@ This work is mainly concerned with extracting information from a specific type o
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{200019500_00006}
-    \caption[Shūgyoku Bukan (袖玉武鑑), page 6]{Shūgyoku Bukan (袖玉武鑑) from 1861, page 6; showing names, descriptions, family crests and procession items. Especially interesting are the blank areas on the right, because in other edition they contain text.}
+    \includegraphics[width=\textwidth]{200019649_00006}
+    \caption[Shūgyoku Bukan (袖玉武鑑), page 6]{Shūgyoku Bukan (袖玉武鑑) from 1867, page 6; showing names, descriptions, family crests and procession items. Especially interesting are the blank areas on the right, because in other edition they contain text.}
     \label{fig:shuugyokubukan006}
 \end{figure}
 
@@ -72,7 +72,7 @@ Using these annotations, six keypoint algorithms were empirically evaluated\foot
 
 \subsection{Projective Transformations}
 
-For images, a Projective Transformation (or \emph{Homography}) is a matrix $\mathbf{H} \in \mathbb{R}^{3 \times 3}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$ ($\vec{x}$ and $\vec{y}$ are interpolated pixel coordinates). This operation results in linear transformations like translation and rotation, but also changes in perspective. For finding such a transformation from matching keypoints, the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is commonly used.\cite{fischler1981random} Basically, a random subset of matching keypoints is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked.
+For images, a Projective Transformation (or \emph{Homography}) is a matrix $\mathbf{H} \in \mathbb{R}^{3 \times 3}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$ ($\vec{x}$ and $\vec{y}$ are interpolated pixel coordinates). This operation results in linear transformations like translation and rotation, but also changes in perspective.\cite{marschner2015fundamentals} For finding such a transformation from matching keypoints, the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is commonly used.\cite{fischler1981random} Basically, a random subset of matching keypoints is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked.
 
 \begin{figure}[p]
     \centering
@@ -83,17 +83,26 @@ For images, a Projective Transformation (or \emph{Homography}) is a matrix $\mat
 
 The benefit is twofold: First, the algorithm implicitly uses spartial information of the matching image candidates to filter out false positives, thus greatly boosting the matching performance. Precision and recall are close to their maximum of $1.0$, see figure~\ref{fig:ransac}. Secondly, it directly yields the transformation matrix $\mathbf{H}$, enabling the creation of image overlays for visualizing the differences. Looking at the perspective components of $\mathbf{H}$, additional filtering is done\footnote{By asserting that $|\mathbf{H}_{1,3}| \leq 0.001$ and $|\mathbf{H}_{2,3}| \leq 0.001$.}, removing even more of the remaining false positives.
 
-\section{Results}
+\section{Discussion}
 
+This two-step-pipeline archieves high precision and recall when looking for similar pages of different book editions. Performance seems to be robust with respect to most parameters. A final threshold on the number of matching keypoints decides if a pair of pages is classified as match. Assuming semi-automatic application with a human assessing the results, recall is of higher importance, thus a low threshold of around $40$ is recommended. Besides, this value might be used as score for estimating the similarity of a page pair.
 
+Computing keypoints is possible in linear time with respect to the number of given images. Finding matches takes quadratic time without prior assumptions since image pairs are processed. Speeding this up should be possible by using techniques from robotics, since the situation is similar: A small number of keypoints from image sensors is for querying a large database of keypoints in memory.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{200019646_00006}
+    \caption[Visualizing page differences]{Visualizing page differences between two prints of the Shūchin Bukan (袖珍武鑑) from 1867. Differences are indicated by \textcolor{blue}{blueish} and \textcolor{red}{reddish} coloring.}
+    \label{fig:page-compare}
+\end{figure}
+
+This can serve as base for building a comparison browser: A scholar in the humanities and literature can browse a book while getting information about similar pages. Differences between pages can be visualized at any time, similar to figure~\ref{fig:page-compare}. This will hopefully lessen her burden when examining numerous pages, since small, abstract differences are often hard to discern for the human eye. 
 
 \section{Conclusion}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula vitae ligula vitae pellentesque. Aliquam placerat commodo urna ac luctus. Nullam aliquam purus diam, vel ornare quam tempor at. In ut est tempus, finibus dolor sed, semper tortor. Cras pharetra mollis nisl. Praesent a nisl tellus. In faucibus, ipsum sit amet varius porta, leo nibh ultrices nisl, a porta nunc nisi commodo tortor. Aenean efficitur viverra urna. Mauris scelerisque orci faucibus, gravida neque non, rutrum enim.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent neque ex, ultricies vulputate magna eu, dignissim consequat ligula. Etiam faucibus bibendum dolor, at ultricies. 
-
-% A scholar in the humanities and literature can now interactively browse these books and quickly identify interesting parts. This will hopefully lessen her burden when examining numerous pages, since small, abstract differences are often hard to discern for the human eye. So instead of exhausting her cognitive ability by staring at pages alone, it will now hopefully be easier to extract information from the actual content.
 
 \printbibliography
 
