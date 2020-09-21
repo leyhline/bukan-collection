@@ -22,64 +22,6 @@ def timeit(function):
     return wrapper
 
 
-def log_progress(sequence, every=None, size=None, name='Items'):
-    """From: <https://github.com/kuk/log-progress>"""
-    from ipywidgets import IntProgress, HTML, VBox
-    from IPython.display import display
-
-    is_iterator = False
-    if size is None:
-        try:
-            size = len(sequence)
-        except TypeError:
-            is_iterator = True
-    if size is not None:
-        if every is None:
-            if size <= 200:
-                every = 1
-            else:
-                every = int(size / 200)     # every 0.5%
-    else:
-        assert every is not None, 'sequence is iterator, set every'
-
-    if is_iterator:
-        progress = IntProgress(min=0, max=1, value=1)
-        progress.bar_style = 'info'
-    else:
-        progress = IntProgress(min=0, max=size, value=0)
-    label = HTML()
-    box = VBox(children=[label, progress])
-    display(box)
-
-    index = 0
-    try:
-        for index, record in enumerate(sequence, 1):
-            if index == 1 or index % every == 0:
-                if is_iterator:
-                    label.value = '{name}: {index} / ?'.format(
-                        name=name,
-                        index=index
-                    )
-                else:
-                    progress.value = index
-                    label.value = u'{name}: {index} / {size}'.format(
-                        name=name,
-                        index=index,
-                        size=size
-                    )
-            yield record
-    except:
-        progress.bar_style = 'danger'
-        raise
-    else:
-        progress.bar_style = 'success'
-        progress.value = index
-        label.value = "{name}: {index}".format(
-            name=name,
-            index=str(index or '?')
-        )
-
-
 def read_offset_csv(path):
     """
     Reads a CSV with book offsets and returns a pandas DataFrame of int8 values.
@@ -184,10 +126,8 @@ def cross_match(descriptors_df, validate=False, norm_type=cv.NORM_HAMMING):
                       np.nan, dtype=np.float32)
     bfmatcher = cv.BFMatcher(norm_type, crossCheck=True)
     distance_getter = operator.attrgetter("distance")
-    for query_i, (_, query_pages) in log_progress(enumerate(descriptors_df.items()),
-                                                  every=1, size=nr_book_ids, name="Books"):
-        for query_j, query_descs in log_progress(enumerate(query_pages),
-                                                 every=1, size=nr_pages, name="Pages"):
+    for query_i, (_, query_pages) in enumerate(descriptors_df.items()):
+        for query_j, query_descs in enumerate(query_pages):
             for train_i, (_, train_pages) in enumerate(descriptors_df.items()):
                 for train_j, train_descs in enumerate(train_pages):
                     if (not isinstance(query_descs, np.ndarray) or
@@ -248,6 +188,11 @@ def precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positive
 
 
 def precision_recall_curves(matches_df, start, stop, step):
+    """
+    Returns a DataFrame holding information about precision and recall
+    grouped by book combination. It seems this is too fine grained,
+    better use `precision_recall_total` instead.
+    """
     results = []
     for book1_id, book2_id in itertools.combinations(matches_df.index.levels[0], 2):
         good, bad = compare_books(book1_id, book2_id, matches_df)
@@ -257,6 +202,27 @@ def precision_recall_curves(matches_df, start, stop, step):
             precision, recall = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)
             results.append((book1_id, book2_id, threshold, precision, recall))
     return pd.DataFrame(results, columns=["Book1", "Book2", "Threshold", "Precision", "Recall"]).set_index(["Book1", "Book2", "Threshold"])
+
+
+def precision_recall_total(matches_df, start, stop, step):
+    """
+    Returns a DataFrame for a single precision and recall curve over `matches_df`.
+    """
+    good_books = []
+    bad_books = []
+    for book1_id, book2_id in itertools.combinations(matches_df.index.levels[0], 2):
+        good, bad = compare_books(book1_id, book2_id, matches_df)
+        good_books.append(good)
+        bad_books.append(bad)
+    good_books = pd.concat(good_books, keys=itertools.combinations(matches_df.index.levels[0], 2), names=["book1_id", "book2_id"])
+    bad_books = pd.concat(bad_books, keys=itertools.combinations(matches_df.index.levels[0], 2), names=["book1_id", "book2_id"])
+    results = []
+    for threshold in np.arange(11, 36, 3):
+        nr_true_positives, nr_cond_positives = threshold_distances(good_books, threshold)
+        nr_false_positives, nr_cond_negatives = threshold_distances(bad_books, threshold)
+        precision, recall = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)
+        results.append((threshold, precision, recall))
+    return pd.DataFrame(results, columns=["Threshold", "Precision", "Recall"]).set_index(["Threshold"])
 
 
 def precision_recall_intersection(precision_recall_df):
