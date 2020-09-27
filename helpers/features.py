@@ -184,7 +184,8 @@ def precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positive
     else:
         precision = nr_true_positives / (nr_true_positives + nr_false_positives)
     recall = nr_true_positives / nr_cond_positives
-    return precision, recall
+    f1 = (2 * precision * recall) / (precision + recall)
+    return precision, recall, f1
 
 
 def precision_recall_curves(matches_df, start, stop, step):
@@ -199,9 +200,9 @@ def precision_recall_curves(matches_df, start, stop, step):
         for threshold in np.arange(start, stop, step):
             nr_true_positives, nr_cond_positives = threshold_distances(good, threshold)
             nr_false_positives, nr_cond_negatives = threshold_distances(bad, threshold)
-            precision, recall = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)
-            results.append((book1_id, book2_id, threshold, precision, recall))
-    return pd.DataFrame(results, columns=["Book1", "Book2", "Threshold", "Precision", "Recall"]).set_index(["Book1", "Book2", "Threshold"])
+            precision, recall, f1 = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)
+            results.append((book1_id, book2_id, threshold, precision, recall, f1))
+    return pd.DataFrame(results, columns=["Book1", "Book2", "Threshold", "Precision", "Recall", "F1"]).set_index(["Book1", "Book2", "Threshold"])
 
 
 def precision_recall_total(matches_df, start, stop, step):
@@ -217,12 +218,12 @@ def precision_recall_total(matches_df, start, stop, step):
     good_books = pd.concat(good_books, keys=itertools.combinations(matches_df.index.levels[0], 2), names=["book1_id", "book2_id"])
     bad_books = pd.concat(bad_books, keys=itertools.combinations(matches_df.index.levels[0], 2), names=["book1_id", "book2_id"])
     results = []
-    for threshold in np.arange(11, 36, 3):
+    for threshold in np.arange(start, stop, step):
         nr_true_positives, nr_cond_positives = threshold_distances(good_books, threshold)
         nr_false_positives, nr_cond_negatives = threshold_distances(bad_books, threshold)
-        precision, recall = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)
-        results.append((threshold, precision, recall))
-    return pd.DataFrame(results, columns=["Threshold", "Precision", "Recall"]).set_index(["Threshold"])
+        precision, recall, f1 = precision_and_recall(nr_true_positives, nr_false_positives, nr_cond_positives)
+        results.append((threshold, precision, recall, f1))
+    return pd.DataFrame(results, columns=["Threshold", "Precision", "Recall", "F1"]).set_index(["Threshold"])
 
 
 def precision_recall_intersection(precision_recall_df):
