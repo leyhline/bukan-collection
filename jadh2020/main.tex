@@ -10,6 +10,10 @@
 
 \renewcommand{\figurename}{Figure}
 
+\definecolor{mplblue}{RGB}{31,119,180}
+\definecolor{mplorange}{RGB}{255,127,14}
+\definecolor{mplgreen}{RGB}{44,160,44}
+
 \title{Computer Vision-based Comparison of Woodblock-printed Books and its Application to Japanese Pre-modern Text, Bukan}
 
 \author[1,3]{Thomas Leyh}
@@ -44,7 +48,7 @@ This work is mainly concerned with extracting information from a specific type o
     \label{fig:shuugyokubukan006}
 \end{figure}
 
-ROIS-DS Center for Open Data in the Humanities and the National Institute of Japanese Literature are offering 381 of these Bukan as open data \cite{codh2018bukan}. The original images have a width of $5616$ and height of $3744$ pixels. From the open data we created a derived dataset using the following preprocessing methods. Under the assumption that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, all scans are resized by $25\%$, converted to grayscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they were additionally split at their horizontal center.
+ROIS-DS Center for Open Data in the Humanities and the National Institute of Japanese Literature are offering 381 of these Bukan as open data \cite{codh2018bukan}. The original images have a width of $5616$ and height of $3744$ pixels. From the open data we created a derived dataset using the following preprocessing methods. Under the assumption that this task (1) does not require this level of detail, (2) does not require information about color and (3) only compares the actual pages, not the surrounding area, all scans are resized by $25\%$, converted to grayscale and finally cropped, resulting in an image shape of $990 \times 660$ pixels. If there are two book pages per scan, they are split at their horizontal center, yielding a shape of $495 \times 660$ pixels per page.
 
 \section{Method}
 
@@ -59,34 +63,35 @@ We used the \emph{OpenCV} software library \cite{opencv_library}.
 
 \subsection{Keypoint Matching}
 
-Keypoint Detection \cite[Ch.4]{szeliski2010computer} is about finding points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. Computer Vision research produced various kinds of keypoints, most prominently SIFT \cite{lowe2004sift}. For evaluating the performance of these algorithms, 12 prints of the Shūchin Bukan (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about the position of matching pages.
+Keypoint Detection \cite[Ch.4]{szeliski2010computer} is about finding points of interest in an image that are most noticeable and give a unique description of the local area surrounding them. Computer Vision research produced various kinds of keypoints, most prominently SIFT \cite{lowe2004sift}. For evaluating the performance of these algorithms, 12 prints of the Shūchin Bukan (袖珍武鑑) were manually annotated, in total around 1800 pages, holding information about pairs of matching pages.
 
 \begin{figure}
      \centering
      \begin{subfigure}[b]{\textwidth}
          \centering
          \includegraphics[width=\textwidth]{keypoints_f1}
-         \caption{F1 score over a range of threshold values, which is the harmonic mean of precision and recall, thus spiking where both underlying metrics are high.}
+         \caption{F1 score over a range of threshold values, which is the harmonic mean of precision and recall, thus peaking where both underlying metrics are high.}
+         \label{fig:keypoint-evaluation-f1}
      \end{subfigure}
      \begin{subfigure}[b]{\textwidth}
          \centering
          \includegraphics[width=\textwidth]{keypoints_optimal}
-         \caption{Precision and recall, assuming an optimal threshold $t$ was chosen. This is an upper bound on the performance of keypoint detection for this dataset.}
+         \caption{\textcolor{mplblue}{Precision} and \textcolor{mplorange}{recall}, assuming an optimal threshold $t$ was chosen. This is an upper bound on the performance of keypoint detection for this dataset.}
      \end{subfigure}
-        \caption{Evaluation of the performance of four keypoint detection algorithms. AKAZE UPRIGHT is most promising, although not very stable with respect to the threshold, i.\,e. the number of matching keypoints per page pair.}
+        \caption{Evaluation of the performance of four keypoint detection algorithms. AKAZE UPRIGHT performs best.}
         \label{fig:keypoint-evaluation}
 \end{figure}
 
-Using these annotations, six keypoint algorithms were empirically evaluated\footnote{ORB \cite{rublee2011orb}, AKAZE \cite{alcantarilla2011fast}, AKAZE without rotational invariance (UPRIGHT), BRISK \cite{leutenegger2011brisk}, SIFT, SURF \cite{bay2006surf}} by trying to match over all possible page combinations. This produces a list of similar keypoint pairs for each combination. The number of these pairs is interpreted as score for the similarity of two pages. The decision about an actual page match is made by thresholding on this score. Using the annotations, precision and recall were calculated for a range of thresholds. At this point, AKAZE UPRIGHT has the best performance with both metrics around $0.8$ for an optimal threshold value. See figure~\ref{fig:keypoint-evaluation} for further details.
+Using these annotations, six keypoint algorithms were empirically evaluated\footnote{ORB \cite{rublee2011orb}, AKAZE \cite{alcantarilla2011fast}, AKAZE without rotational invariance (UPRIGHT), BRISK \cite{leutenegger2011brisk}, SIFT, SURF \cite{bay2006surf}} by trying to match over all possible page combinations. This produces a list of similar keypoint pairs for each combination. The number of these pairs is interpreted as score for the similarity of two pages. Two pages are matched if the score is above a given threshold. On the one hand, a low threshold results in more matches (higher recall), but a larger part is judged incorrectly. On the other hand, a high threshold yields a larger percentage of correct matches (higher precision), misclassifying actual matches at the same time. Using the annotations, precision and recall were calculated for a range of thresholds. At this point, AKAZE UPRIGHT has the best performance with both metrics around $0.8$ for an optimal threshold value. See figure~\ref{fig:keypoint-evaluation} for further details.
 
 \subsection{Projective Transformations}
 
-For images, a Projective Transformation (or Homography) is a matrix $\mathbf{H} \in \mathbb{R}^{3 \times 3}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$ ($\vec{x}$ and $\vec{y}$ are interpolated pixel coordinates). This operation results in linear transformations like translation and rotation, but also changes in perspective \cite{marschner2015fundamentals}. For finding such a transformation from matching keypoints, the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is commonly used \cite{fischler1981random}. Basically, a random subset of matching keypoints is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked.
+Projective Transformation (or Homography) for images is defined as a matrix $\mathbf{H} \in \mathbb{R}^{3 \times 3}$ for transforming homogeneous coordinates $\mathbf{H}\vec{x} = \vec{y}$ ($\vec{x}$ and $\vec{y}$ are interpolated pixel coordinates). This operation results in linear transformations like translation and rotation, but also changes in perspective \cite{marschner2015fundamentals}. For finding such a transformation from matching keypoints, the heuristic \emph{Random Sample Consensus} (RANSAC) algorithm is commonly used \cite{fischler1981random}. Basically, a random subset of matching keypoints is chosen, using this to compute a transformation and calculating an error metric. By iteratively using different random subsets, eventually the transformation with the smallest error is picked.
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{ransac_performance}
-    \caption[RANSAC performance]{Applying RANSAC on the keypoint matches from AKAZE UPRIGHT results in better classification results: For a wide range of threshold values (30 to 68, \textcolor{darkgray}{the grey horizontal line}) precision and recall are above $0.94$, showing an increase in performance and stability.}
+    \caption[RANSAC performance]{Applying RANSAC on the keypoint matches from AKAZE UPRIGHT results in better classification results: The \textcolor{mplgreen}{F1 score}---see figure~\ref{fig:keypoint-evaluation-f1}---is above $0.95$ for a wide range of thresholds up to $80$, indicated by the \textcolor{darkgray}{grey horizontal line}.}
     \label{fig:ransac}
 \end{figure}
 
@@ -94,7 +99,7 @@ The benefit is twofold: First, the algorithm implicitly uses spatial information
 
 \section{Discussion}
 
-This two-step-pipeline archives high precision and recall when looking for similar pages of different book editions. Performance seems to be robust with respect to most parameters. For classifying two pages as match, the number of matching keypoints is important since it is acting as a score. By preserving this value it is possible to rank page pairs by visual similarity. Furthermore, a threshold can be set dynamically, even after the computation of keypoint pairs. Assuming semi-automatic application with a human assessing the results, recall is of higher importance, thus a low threshold of around $40$ is recommended, but can be adjusted any time. See again figure~\ref{fig:ransac} for the slope of the recall curve.
+This two-step-pipeline archives high precision and recall when looking for similar pages of different book editions. Performance seems to be robust with respect to most parameters. For matching two actual pages, the number of matching keypoints is important since it is acting as a score. Storing this value allows a ranking of page pairs by visual similarity. Furthermore, a threshold can be set dynamically, even after the computation of keypoint pairs. Assuming semi-automatic application with a human assessing the results, recall is of higher importance, thus a low threshold of around $40$ is recommended, but can be adjusted any time. See again figure~\ref{fig:ransac} for the slope of the recall curve.
 
 \begin{figure}
     \centering
@@ -103,11 +108,13 @@ This two-step-pipeline archives high precision and recall when looking for simil
     \label{fig:page-compare}
 \end{figure}
 
-This was the basis for building a web-based prototype of a comparison browser: A scholar in the humanities can browse a book while getting information about similar pages. Differences between pages can be visualized at any time, similar to figure~\ref{fig:page-compare}. Prof. Kumiko Fujizane, who is a Japanese humanities scholar specialized in this particular type of books and collaborates with us, says that the major strength of our method is in identifying differences which are hard to discern by human eye, while weakness is in errors caused by the distortion of pages by book binding. Her request for future work is to identify region-based difference in addition to page-based difference.
+This was the basis for building a web-based prototype of a comparison browser: A scholar in the humanities can browse a book while getting information about similar pages. Differences between pages can be visualized at any time, similar to figure~\ref{fig:page-compare}. As a next step, we are designing a web-based tool that is easy to use and works for IIIF images.
+
+Prof. Kumiko Fujizane, who is a Japanese humanities scholar specialized in this particular type of books and collaborates with us, says that the major strength of our method is in identifying differences which are hard to discern by human eye, while its weakness is in errors caused by the distortion of pages by the book binding. Her request for future work is to identify region-based difference in addition to page-based difference.
 
 \section{Conclusion}
 
-Open Data and digitization are accompanied by new possibilities, especially in the humanities. Here, algorithms from computer vision were able to produce excellent results on visually comparing pages and whole books. Although image alignment is a mature research area we also see recent developments, such as RANSAC-Flow \cite{shen2019ransac}, with potential to improve our results.
+The proposed method has wide applicability in woodblock-printed books, because the method uses only visual characteristics obtained from computer vision, and does not depend on the content nor the text of books. Although image alignment is a mature research area we also see recent developments, such as RANSAC-Flow \cite{shen2019ransac}, with potential to improve our results.
 
 \printbibliography
 
